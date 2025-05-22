@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.ezilish" />
+                  <option name="mobileSdkAppId" value="1:52667256347:android:759ffa886e3ad95dcbf2be" />
+                  <option name="projectId" value="english-learning-app-5ce7f" />
+                  <option name="projectNumber" value="52667256347" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

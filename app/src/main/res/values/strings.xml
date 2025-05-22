@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EziLish</string>
+    <string name="default_web_client_id">52667256347-2pibar5k1eg2rraic1qj9sj2tsq5ircd.apps.googleusercontent.com</string>
+
 </resources>
