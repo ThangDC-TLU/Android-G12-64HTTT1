@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "52667256347",
+    "firebase_url": "https://english-learning-app-5ce7f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "english-learning-app-5ce7f",
+    "storage_bucket": "english-learning-app-5ce7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52667256347:android:759ffa886e3ad95dcbf2be",
+        "android_client_info": {
+          "package_name": "com.example.ezilish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52667256347-2pibar5k1eg2rraic1qj9sj2tsq5ircd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ezilish",
+            "certificate_hash": "23e4a7c34f85dc838fdcffc28b04ec84a6aacad1"
+          }
+        },
+        {
+          "client_id": "52667256347-6730dq7kuh65fmov78uc59n9o0lr343q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNjLuZBlQ8SIf7r5Sn6pXdaCJxEK2QFAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52667256347-6730dq7kuh65fmov78uc59n9o0lr343q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52667256347:android:b7ec192d2f8235bacbf2be",
+        "android_client_info": {
+          "package_name": "vn.edu.tlu.dinhcaothang.ezilish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52667256347-6730dq7kuh65fmov78uc59n9o0lr343q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNjLuZBlQ8SIf7r5Sn6pXdaCJxEK2QFAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52667256347-6730dq7kuh65fmov78uc59n9o0lr343q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
