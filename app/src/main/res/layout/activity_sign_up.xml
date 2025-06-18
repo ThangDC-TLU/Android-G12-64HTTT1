@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".activities.SignUpActivity"
+    android:id="@+id/main">
+
+    <!-- Logo "E" -->
+
+    <!-- TextView "Sign up | Sign in" -->
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="168dp"
+        android:contentDescription="EziLish Logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <TextView
+        android:id="@+id/tvSignOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign up  |  Sign in"
+        android:textSize="24sp"
+        android:textColor="#1E90FF"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- EditText User Name -->
+    <EditText
+        android:id="@+id/etUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edittext_border"
+    android:hint="User Name"
+    android:textSize="18sp"
+    android:fontFamily="sans-serif"
+    android:inputType="text"
+    android:padding="12dp"
+    app:layout_constraintTop_toBottomOf="@id/tvSignOptions"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- EditText Email -->
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_border"
+    android:hint="Email"
+    android:textSize="18sp"
+    android:fontFamily="sans-serif"
+    android:inputType="textEmailAddress"
+    android:padding="12dp"
+    app:layout_constraintTop_toBottomOf="@id/etUserName"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- EditText Password -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_border"
+    android:hint="Password"
+    android:textSize="18sp"
+    android:fontFamily="sans-serif"
+    android:inputType="textPassword"
+    android:padding="12dp"
+    app:layout_constraintTop_toBottomOf="@id/etEmail"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Button "Sign up" -->
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sign up"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1E90FF"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
