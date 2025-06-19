@@ -13,6 +13,9 @@
         android:theme="@style/Theme.EziLish"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ChatAiActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
