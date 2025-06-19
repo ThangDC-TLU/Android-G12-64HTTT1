@@ -1,6 +1,7 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
 public class ChatAiActivity extends AppCompatActivity {
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +24,13 @@ public class ChatAiActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         getSupportActionBar().hide();
+
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            onBackPressed();
+        });
+
 
     }
 }

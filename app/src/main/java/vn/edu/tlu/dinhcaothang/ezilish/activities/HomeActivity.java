@@ -1,13 +1,18 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
@@ -25,13 +30,26 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        // Get username from Intent
-        TextView tvUserName = findViewById(R.id.tvUserName); // Giả sử ID này có trong layout
+        TextView tvUserName = findViewById(R.id.tvUserName);
         String username = getIntent().getStringExtra("username");
-        if (username != null) {
-            tvUserName.setText("Hello, " + username);
-        } else {
-            tvUserName.setText("Hello, Guest"); // Mặc định nếu không có username
-        }
+        tvUserName.setText(username != null ? "Hello, " + username : "Hello, Guest");
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_home) {
+                    return true;
+                } else if (itemId == R.id.nav_chat) {
+                    startActivity(new Intent(HomeActivity.this, ChatAiActivity.class));
+                    return true;
+                } else if (itemId == R.id.nav_profile) {
+                    // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }
