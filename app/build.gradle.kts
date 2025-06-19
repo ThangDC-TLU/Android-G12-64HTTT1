@@ -15,6 +15,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "GEMINI_API_KEY", "\"${project.properties["GEMINI_API_KEY"]}\"")
+
+
+    }
+
+    buildFeatures {
+        buildConfig = true // ✅ Bắt buộc để sử dụng buildConfigField
     }
 
     buildTypes {
@@ -38,7 +45,12 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation ("com.android.volley:volley:1.2.1'")
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+
 }
