@@ -44,10 +44,8 @@ public class ChatAiActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private List<Message> messageList = new ArrayList<>();
 
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + BuildConfig.GEMINI_API_KEY;
-
-    private static final String PREF_NAME = "chat_prefs";
-    private static final String CHAT_HISTORY_KEY = "chat_history";
+    private String userEmail;
+    private static final String BASE_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +60,10 @@ public class ChatAiActivity extends AppCompatActivity {
         });
 
         getSupportActionBar().hide();
+
+        // Lấy email người dùng từ Intent
+        userEmail = getIntent().getStringExtra("email");
+        if (userEmail == null || userEmail.isEmpty()) userEmail = "unknown_user";
 
         btnBack = findViewById(R.id.btnBack);
         etMessage = findViewById(R.id.etMessage);
@@ -84,6 +86,14 @@ public class ChatAiActivity extends AppCompatActivity {
                 sendToGemini(userText);
             }
         });
+    }
+
+    private String getPrefsName() {
+        return "chat_prefs_" + userEmail;
+    }
+
+    private String getChatKey() {
+        return "chat_history_" + userEmail;
     }
 
     private void addMessage(String content, boolean isUser) {
@@ -110,6 +120,8 @@ public class ChatAiActivity extends AppCompatActivity {
 
             JSONObject requestBody = new JSONObject();
             requestBody.put("contents", contents);
+
+            String API_URL = BASE_API_URL + BuildConfig.GEMINI_API_KEY;
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, API_URL, requestBody,
                     response -> {
@@ -148,29 +160,31 @@ public class ChatAiActivity extends AppCompatActivity {
     }
 
     private void saveChatHistory() {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(getPrefsName(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(messageList);
-        editor.putString(CHAT_HISTORY_KEY, json);
+        String json = new Gson().toJson(messageList);
+        editor.putString(getChatKey(), json);
         editor.apply();
     }
 
     private void loadChatHistory() {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String json = prefs.getString(CHAT_HISTORY_KEY, null);
+        SharedPreferences prefs = getSharedPreferences(getPrefsName(), MODE_PRIVATE);
+        String json = prefs.getString(getChatKey(), null);
         if (json != null) {
-            Gson gson = new Gson();
             Type type = new TypeToken<List<Message>>() {}.getType();
-            List<Message> savedMessages = gson.fromJson(json, type);
+            List<Message> savedMessages = new Gson().fromJson(json, type);
             messageList.clear();
             messageList.addAll(savedMessages);
             chatAdapter.notifyDataSetChanged();
         }
     }
 
-    public void clearChatHistory(ChatAiActivity chatAiActivity) {
-        getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                .edit().remove(CHAT_HISTORY_KEY).apply();
+    public void clearChatHistory() {
+        getSharedPreferences(getPrefsName(), MODE_PRIVATE).edit().remove(getChatKey()).apply();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

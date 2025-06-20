@@ -130,11 +130,13 @@ public class LoginActivity extends AppCompatActivity {
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         String userName = userSnapshot.child("username").getValue(String.class); // Lấy username
                         String storedPassword = userSnapshot.child("password").getValue(String.class); // Lấy mật khẩu lưu trữ
+                        String storedEmail = userSnapshot.child("email").getValue(String.class); // Lấy email lưu trữ
                         if (storedPassword != null && storedPassword.equals(password)) { // So sánh mật khẩu
                             // Đăng nhập thành công, lưu thông tin và chuyển màn hình
                             saveCredentials(email, password);
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.putExtra("username", userName); // Truyền username sang HomeActivity
+                            intent.putExtra("email", storedEmail); // Truyền email sang HomeActivity
                             startActivity(intent); // Chuyển sang HomeActivity
                             finish(); // Đóng LoginActivity
                             return;

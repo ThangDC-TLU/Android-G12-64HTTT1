@@ -42,7 +42,10 @@ public class HomeActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_home) {
                     return true;
                 } else if (itemId == R.id.nav_chat) {
-                    startActivity(new Intent(HomeActivity.this, ChatAiActivity.class));
+                    Intent intent = new Intent(HomeActivity.this, ChatAiActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("email", getIntent().getStringExtra("email"));
+                    startActivity(intent);
                     return true;
                 } else if (itemId == R.id.nav_profile) {
                     // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
