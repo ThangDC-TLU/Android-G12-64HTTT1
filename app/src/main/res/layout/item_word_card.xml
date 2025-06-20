@@ -7,73 +7,93 @@
     card_view:cardElevation="4dp"
     card_view:cardBackgroundColor="#FFFFFF">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/frameFlip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
+        <!-- Mặt trước (front) -->
         <LinearLayout
+            android:id="@+id/layoutFront"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvWord"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="father"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="#232323" />
+
+                <ImageView
+                    android:id="@+id/imgStar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_star_border"
+                    android:tint="#B0BEC5"
+                    android:contentDescription="Favorite" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvWord"
-                android:layout_width="0dp"
+                android:id="@+id/tvPhonetic"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="father"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="#232323"/>
+                android:text="/ˈfɑːðər/"
+                android:textColor="#2196F3"
+                android:textSize="16sp"
+                android:layout_marginTop="2dp"/>
 
-            <ImageView
-                android:id="@+id/imgStar"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_star_border"
-                android:tint="#B0BEC5"
-                android:contentDescription="Favorite"/>
+            <TextView
+                android:id="@+id/tvExplanation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A male parent."
+                android:textSize="15sp"
+                android:textColor="#232323"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:id="@+id/tvExample"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My father is a doctor."
+                android:textSize="15sp"
+                android:textColor="#232323"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvPhonetic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/ˈfɑːðər/"
-            android:textColor="#2196F3"
-            android:textSize="16sp"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvExplanation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="A male parent."
-            android:textSize="15sp"
-            android:textColor="#232323"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvExampleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ex:"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#2196F3"
-            android:layout_marginTop="8dp"/>
-
-        <TextView
-            android:id="@+id/tvExample"
+        <!-- Mặt sau (nghĩa tiếng Việt) -->
+        <LinearLayout
+            android:id="@+id/layoutBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My father is a doctor."
-            android:textSize="15sp"
-            android:textColor="#232323"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvVietnamese"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bố, cha"
+                android:textColor="#2196F3"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+        </LinearLayout>
+
+    </FrameLayout>
 </androidx.cardview.widget.CardView>
