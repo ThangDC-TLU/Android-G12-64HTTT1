@@ -8,9 +8,6 @@
     tools:context=".activities.SignUpActivity"
     android:id="@+id/main">
 
-    <!-- Logo "E" -->
-
-    <!-- TextView "Sign up | Sign in" -->
 
     <ImageView
         android:id="@+id/ivLogo"
