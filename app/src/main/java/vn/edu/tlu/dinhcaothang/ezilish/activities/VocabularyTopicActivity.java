@@ -43,7 +43,7 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_topics);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         topicList = new ArrayList<>();
-        adapter = new VocabularyTopicAdapter(topicList);
+        adapter = new VocabularyTopicAdapter(topicList, this);
         recyclerView.setAdapter(adapter);
 
         // Ánh xạ các view dialog

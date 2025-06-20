@@ -1,6 +1,7 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,16 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
 public class VocabularyTopicAdapter extends RecyclerView.Adapter<VocabularyTopicAdapter.TopicViewHolder> {
     private List<VocabularyTopic> topicList;
+    private Context context;
 
-    public VocabularyTopicAdapter(List<VocabularyTopic> topicList) {
+    // Thêm constructor có Context
+    public VocabularyTopicAdapter(List<VocabularyTopic> topicList, Context context) {
         this.topicList = topicList;
+        this.context = context;
     }
 
     @Override
@@ -29,6 +32,12 @@ public class VocabularyTopicAdapter extends RecyclerView.Adapter<VocabularyTopic
         VocabularyTopic topic = topicList.get(position);
         holder.tvTopicName.setText(topic.getName());
         holder.tvWordCount.setText("(" + topic.getWordCount() + ")");
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, WordListActivity.class);
+            intent.putExtra("topicId", topic.getId());
+            intent.putExtra("topicName", topic.getName());
+            context.startActivity(intent);
+        });
     }
 
     @Override

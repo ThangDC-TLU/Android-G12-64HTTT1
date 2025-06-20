@@ -3,13 +3,9 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 public class VocabularyTopic {
     private String id;
     private String name;
-    private int wordCount; // Số từ trong topic
+    private int wordCount;
 
-    public VocabularyTopic() {} // Bắt buộc cho Firebase
-
-    public VocabularyTopic(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public VocabularyTopic() {
     }
 
     public VocabularyTopic(String id, String name, int wordCount) {
@@ -18,11 +14,27 @@ public class VocabularyTopic {
         this.wordCount = wordCount;
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public int getWordCount() { return wordCount; }
+    public String getId() {
+        return id;
+    }
 
-    public void setId(String id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setWordCount(int wordCount) { this.wordCount = wordCount; }
+    public String getName() {
+        return name;
+    }
+
+    public int getWordCount() {
+        return wordCount;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWordCount(int wordCount) {
+        this.wordCount = wordCount;
+    }
 }
