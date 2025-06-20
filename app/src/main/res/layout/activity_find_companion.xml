@@ -63,6 +63,19 @@
             android:src="@drawable/ic_heart"
             android:scaleType="centerInside"
             />
+
+        <Space
+            android:layout_width="32dp"
+            android:layout_height="0dp" />
+
+        <ImageButton
+            android:id="@+id/btnRefresh"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circle_button_bg_purple"
+            android:src="@drawable/ic_refresh"
+            android:scaleType="centerInside"
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

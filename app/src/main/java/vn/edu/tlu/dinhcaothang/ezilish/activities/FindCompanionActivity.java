@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,22 +28,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
 public class FindCompanionActivity extends AppCompatActivity {
     private FrameLayout cardContainer;
-    private ImageButton btnBack;
+    private ImageButton btnBack, btnDislike, btnLike, btnRefresh;
     private FusedLocationProviderClient fusedLocationClient;
     private double myLat, myLng;
     private String currentUserEmail = "";
+
+    private List<Map<String, Object>> nearbyUsers = new ArrayList<>();
+    private int currentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_find_companion);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -51,13 +58,28 @@ public class FindCompanionActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        currentUserEmail = getIntent().getStringExtra("email"); // 🟢 Lấy email người dùng đang đăng nhập
+        // Lấy email người dùng từ Intent
+        currentUserEmail = getIntent().getStringExtra("email");
 
+        // Ánh xạ view
         btnBack = findViewById(R.id.btnBack);
         cardContainer = findViewById(R.id.cardContainer);
+        btnDislike = findViewById(R.id.btnDislike);
+        btnLike = findViewById(R.id.btnLike);
+        btnRefresh = findViewById(R.id.btnRefresh);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnBack.setOnClickListener(v -> onBackPressed());
+        btnDislike.setOnClickListener(v -> showNextUser());
+        btnLike.setOnClickListener(v -> {
+            // TODO: xử lý hành động Like (ví dụ lưu vào Firebase)
+            showNextUser();
+        });
+
+        btnRefresh.setOnClickListener(v -> {
+            requestLocationAndLoadUsers();
+        });
 
         requestLocationAndLoadUsers();
     }
@@ -86,6 +108,8 @@ public class FindCompanionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cardContainer.removeAllViews();
+                nearbyUsers.clear();
+                currentIndex = 0;
 
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     Map<String, Object> userData = (Map<String, Object>) userSnapshot.getValue();
@@ -94,30 +118,42 @@ public class FindCompanionActivity extends AppCompatActivity {
                         continue;
 
                     String email = userData.get("email").toString();
-                    if (email.equalsIgnoreCase(currentUserEmail)) {
-                        continue; // ❌ BỎ QUA NGƯỜI DÙNG HIỆN TẠI
-                    }
+                    if (email.equalsIgnoreCase(currentUserEmail)) continue;
 
                     Map<String, Object> locationMap = (Map<String, Object>) userData.get("location");
-
                     double lat = Double.parseDouble(locationMap.get("latitude").toString());
                     double lng = Double.parseDouble(locationMap.get("longitude").toString());
-
                     double distance = calculateDistance(myLat, myLng, lat, lng);
 
                     if (distance <= 50.0) {
-                        addUserCard(userData, distance);
+                        userData.put("distance", distance);
+                        nearbyUsers.add(userData);
                     }
+                }
+
+                if (!nearbyUsers.isEmpty()) {
+                    showUserCard(currentIndex);
+                } else {
+                    showNoUsersMessage();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
-    private void addUserCard(Map<String, Object> userData, double distance) {
+    private void showUserCard(int index) {
+        if (index >= nearbyUsers.size()) {
+            showNoUsersMessage();
+            return;
+        }
+
+        cardContainer.removeAllViews();
+
+        Map<String, Object> userData = nearbyUsers.get(index);
+        double distance = Double.parseDouble(userData.get("distance").toString());
+
         View card = LayoutInflater.from(this).inflate(R.layout.card_item, cardContainer, false);
 
         TextView tvNameAge = card.findViewById(R.id.user_name_age);
@@ -125,11 +161,26 @@ public class FindCompanionActivity extends AppCompatActivity {
         TextView tvDistance = card.findViewById(R.id.user_distance);
         ImageView imageView = card.findViewById(R.id.user_image);
 
-        tvNameAge.setText(userData.get("username") + ", 20"); // giả định tuổi
-        tvResidence.setText("Hà Nội"); // nếu có trường "residence" thì dùng nó
+        tvNameAge.setText(userData.get("username") + ", 20");
+        tvResidence.setText("Hà Nội");
         tvDistance.setText(distance + " KM");
 
+        // TODO: Load ảnh đại diện nếu có URL trong userData
+
         cardContainer.addView(card);
+    }
+
+    private void showNextUser() {
+        currentIndex++;
+        showUserCard(currentIndex);
+    }
+
+    private void showNoUsersMessage() {
+        cardContainer.removeAllViews();
+        TextView message = new TextView(this);
+        message.setText("Không còn người dùng nào gần bạn.");
+        message.setPadding(40, 40, 40, 40);
+        cardContainer.addView(message);
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
