@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">EziLish</string>
+    <string name="desc_back_arrow">Back arrow icon</string>
+    <string name="choose_topic_title">Choose a topic to learn new word</string>
+    <string name="add_topic">Add Topic</string>
+    <string name="desc_add_topic">Add topic icon</string>
+    <string name="topic_list">Topic list</string>
+    <string name="desc_cube">Cube icon</string>
+    <string name="desc_web">Web icon</string>
+    <string name="desc_home">Home icon</string>
+    <string name="desc_menu">Menu icon</string>
+    <string name="desc_user">User icon</string>
 </resources>

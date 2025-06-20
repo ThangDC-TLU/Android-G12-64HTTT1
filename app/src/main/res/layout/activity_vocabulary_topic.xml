@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0070E0"
+    android:fitsSystemWindows="true"
+    android:id="@+id/main">
+
+    <!-- Header CardView (KHÔNG có chữ EziLish, chỉ giữ lại CardView header với mũi tên và tiêu đề) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/header_card"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/desc_back_arrow"
+                android:padding="6dp"
+                android:src="@drawable/ic_back_arrow"
+                android:tint="#1B60AF" />
+
+            <TextView
+                android:id="@+id/header_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/choose_topic_title"
+                android:textColor="#232323"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="#80FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/header_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Topics Grid -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_topics"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="90dp"
+        android:contentDescription="@string/topic_list"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/add_topic_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:spanCount="2" />
+
+    <LinearLayout
+        android:id="@+id/add_topic_container"
+        android:layout_width="171dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/add_topic_bg"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_topics">
+
+        <TextView
+            android:id="@+id/tv_add_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="8dp"
+            android:text="@string/add_topic"
+            android:textColor="#2196F3"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btn_add"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/circle_white"
+            android:contentDescription="@string/desc_add_topic"
+            android:src="@drawable/ic_add"
+            android:tint="#2196F3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="#532DC8"
+        android:paddingHorizontal="20dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/nav_cube"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_cube"
+            android:tint="#ffffff"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/desc_cube" />
+
+        <ImageView
+            android:id="@+id/nav_web"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_web"
+            android:tint="#ffffff"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/desc_web" />
+
+        <!-- Home with colored circle -->
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/circle_orange"
+                android:elevation="2dp" />
+
+            <ImageView
+                android:id="@+id/nav_home"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/desc_home"
+                android:padding="4dp"
+                android:src="@drawable/ic_home"
+                android:tint="#532DC8" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/nav_menu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_menu"
+            android:tint="#ffffff"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/desc_menu" />
+
+        <ImageView
+            android:id="@+id/nav_user"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_user"
+            android:tint="#ffffff"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:contentDescription="@string/desc_user" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
