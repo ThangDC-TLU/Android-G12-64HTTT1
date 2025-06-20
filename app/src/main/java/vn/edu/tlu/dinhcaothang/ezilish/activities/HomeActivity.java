@@ -56,6 +56,12 @@ public class HomeActivity extends AppCompatActivity {
                     intent.putExtra("email", getIntent().getStringExtra("email"));
                     startActivity(intent);
                     return true;
+                } else if (itemId == R.id.nav_conversation) {
+                    Intent intent = new Intent(HomeActivity.this, ConversationActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("email", getIntent().getStringExtra("email"));
+                    startActivity(intent);
+                    return true;
                 } else if (itemId == R.id.nav_profile) {
                     // startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                     return true;

@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_chat"
         android:title="Chat AI" />
     <item
+        android:id="@+id/nav_conversation"
+        android:icon="@drawable/ic_chat_user"
+        android:title="Chat" />
+    <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
