@@ -33,16 +33,16 @@ import java.util.Map;
 
 import vn.edu.tlu.dinhcaothang.ezilish.BuildConfig;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
-import vn.edu.tlu.dinhcaothang.ezilish.adapters.ChatAdapter;
-import vn.edu.tlu.dinhcaothang.ezilish.models.Message;
+import vn.edu.tlu.dinhcaothang.ezilish.adapters.ChatAiAdapter;
+import vn.edu.tlu.dinhcaothang.ezilish.models.MessageAi;
 
 public class ChatAiActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private EditText etMessage;
     private Button btnSend;
     private RecyclerView rvChatMessages;
-    private ChatAdapter chatAdapter;
-    private List<Message> messageList = new ArrayList<>();
+    private ChatAiAdapter chatAiAdapter;
+    private List<MessageAi> messageAiList = new ArrayList<>();
 
     private String userEmail;
     private static final String BASE_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
@@ -70,9 +70,9 @@ public class ChatAiActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
         rvChatMessages = findViewById(R.id.rvChatMessages);
 
-        chatAdapter = new ChatAdapter(messageList);
+        chatAiAdapter = new ChatAiAdapter(messageAiList);
         rvChatMessages.setLayoutManager(new LinearLayoutManager(this));
-        rvChatMessages.setAdapter(chatAdapter);
+        rvChatMessages.setAdapter(chatAiAdapter);
 
         loadChatHistory();
 
@@ -97,9 +97,9 @@ public class ChatAiActivity extends AppCompatActivity {
     }
 
     private void addMessage(String content, boolean isUser) {
-        messageList.add(new Message(content, isUser));
-        chatAdapter.notifyItemInserted(messageList.size() - 1);
-        rvChatMessages.scrollToPosition(messageList.size() - 1);
+        messageAiList.add(new MessageAi(content, isUser));
+        chatAiAdapter.notifyItemInserted(messageAiList.size() - 1);
+        rvChatMessages.scrollToPosition(messageAiList.size() - 1);
         saveChatHistory();
     }
 
@@ -162,7 +162,7 @@ public class ChatAiActivity extends AppCompatActivity {
     private void saveChatHistory() {
         SharedPreferences prefs = getSharedPreferences(getPrefsName(), MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        String json = new Gson().toJson(messageList);
+        String json = new Gson().toJson(messageAiList);
         editor.putString(getChatKey(), json);
         editor.apply();
     }
@@ -171,11 +171,11 @@ public class ChatAiActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(getPrefsName(), MODE_PRIVATE);
         String json = prefs.getString(getChatKey(), null);
         if (json != null) {
-            Type type = new TypeToken<List<Message>>() {}.getType();
-            List<Message> savedMessages = new Gson().fromJson(json, type);
-            messageList.clear();
-            messageList.addAll(savedMessages);
-            chatAdapter.notifyDataSetChanged();
+            Type type = new TypeToken<List<MessageAi>>() {}.getType();
+            List<MessageAi> savedMessageAis = new Gson().fromJson(json, type);
+            messageAiList.clear();
+            messageAiList.addAll(savedMessageAis);
+            chatAiAdapter.notifyDataSetChanged();
         }
     }
 

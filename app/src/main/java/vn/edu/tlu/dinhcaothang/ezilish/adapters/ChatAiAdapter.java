@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
-import vn.edu.tlu.dinhcaothang.ezilish.models.Message;
+import vn.edu.tlu.dinhcaothang.ezilish.models.MessageAi;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
-    private List<Message> messages;
+public class ChatAiAdapter extends RecyclerView.Adapter<ChatAiAdapter.ChatViewHolder> {
+    private List<MessageAi> messageAis;
 
-    public ChatAdapter(List<Message> messages) {
-        this.messages = messages;
+    public ChatAiAdapter(List<MessageAi> messageAis) {
+        this.messageAis = messageAis;
     }
 
     @NonNull
@@ -29,7 +29,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        Message msg = messages.get(position);
+        MessageAi msg = messageAis.get(position);
         if (msg.isUser()) {
             holder.userMessage.setText(msg.getContent());
             holder.userMessage.setVisibility(View.VISIBLE);
@@ -43,7 +43,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return messageAis.size();
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {

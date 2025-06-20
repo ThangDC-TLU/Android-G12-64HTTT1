@@ -1,6 +1,7 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -55,7 +56,6 @@ public class FindCompanionActivity extends AppCompatActivity {
 
         currentUserEmail = getIntent().getStringExtra("email");
 
-        // Ánh xạ view
         btnBack = findViewById(R.id.btnBack);
         cardContainer = findViewById(R.id.cardContainer);
         btnDislike = findViewById(R.id.btnDislike);
@@ -190,6 +190,7 @@ public class FindCompanionActivity extends AppCompatActivity {
 
         Map<String, Object> likedUser = nearbyUsers.get(currentIndex);
         String likedUserId = likedUser.get("id").toString();
+        String likedUsername = likedUser.get("username").toString();
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
@@ -204,7 +205,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                                     if (snapshot.exists()) {
                                         usersRef.child(currentUserId).child("matchedUsers").child(likedUserId).setValue(true);
                                         usersRef.child(likedUserId).child("matchedUsers").child(currentUserId).setValue(true);
-                                        showMatchDialog("Bạn", likedUser.get("username").toString());
+                                        showMatchDialog(currentUserId, currentUserEmail, likedUserId, likedUsername);
                                     } else {
                                         showNextUser();
                                     }
@@ -216,14 +217,14 @@ public class FindCompanionActivity extends AppCompatActivity {
                 });
     }
 
-    private void showMatchDialog(String currentUser, String matchedUser) {
+    private void showMatchDialog(String myId, String myEmail, String matchedId, String matchedUsername) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.match_dialog, null);
 
         TextView title = dialogView.findViewById(R.id.match_title);
         ImageView currentImg = dialogView.findViewById(R.id.current_user_image);
         ImageView otherImg = dialogView.findViewById(R.id.other_user_image);
 
-        title.setText("Bạn và " + matchedUser + " đã match thành công!");
+        title.setText("Bạn và " + matchedUsername + " đã match thành công!");
         currentImg.setImageResource(R.drawable.img_profile);
         otherImg.setImageResource(R.drawable.img_profile);
 
@@ -232,7 +233,19 @@ public class FindCompanionActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .create();
 
-        dialogView.findViewById(R.id.send_message_button).setOnClickListener(v -> dialog.dismiss());
+        dialogView.findViewById(R.id.send_message_button).setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(FindCompanionActivity.this, ChatActivity.class);
+//            intent.putExtra("currentUserId", myId);
+//            intent.putExtra("currentUserEmail", myEmail);
+//            intent.putExtra("matchedUserId", matchedId);
+//            intent.putExtra("matchedUsername", matchedUsername);
+            intent.putExtra("currentUserId", currentUserId);
+            intent.putExtra("receiverId", matchedId);
+            startActivity(intent);
+            startActivity(intent);
+        });
+
         dialogView.findViewById(R.id.keep_swiping_button).setOnClickListener(v -> {
             dialog.dismiss();
             showNextUser();
