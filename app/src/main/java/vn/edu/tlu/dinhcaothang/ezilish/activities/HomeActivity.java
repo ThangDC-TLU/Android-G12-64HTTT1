@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
 public class HomeActivity extends AppCompatActivity {
+    private TextView tvExploreMore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,14 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvUserName = findViewById(R.id.tvUserName);
         String username = getIntent().getStringExtra("username");
         tvUserName.setText(username != null ? "Hello, " + username : "Hello, Guest");
+
+        tvExploreMore = findViewById(R.id.tvExploreMore);
+        tvExploreMore.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, FindCompanionActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("email", getIntent().getStringExtra("email"));
+            startActivity(intent);
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
