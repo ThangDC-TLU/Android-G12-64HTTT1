@@ -2,6 +2,12 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,6 +29,12 @@ public class VocabularyTopicActivity extends AppCompatActivity {
     private VocabularyTopicAdapter adapter;
     private List<VocabularyTopic> topicList;
 
+    // Các View cho dialog thêm topic
+    private LinearLayout addTopicDialog;
+    private View blurOverlay;
+    private EditText etTopicName;
+    private Button btnSave, btnCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +42,73 @@ public class VocabularyTopicActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_topics);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
         topicList = new ArrayList<>();
         adapter = new VocabularyTopicAdapter(topicList);
         recyclerView.setAdapter(adapter);
 
+        // Ánh xạ các view dialog
+        addTopicDialog = findViewById(R.id.addTopicDialog);
+        blurOverlay = findViewById(R.id.blurOverlay);
+        etTopicName = findViewById(R.id.etTopicName);
+        btnSave = findViewById(R.id.btnSave);
+        btnCancel = findViewById(R.id.btnCancel);
+
+        // Nút Add Topic (nằm trong add_topic_container)
+        findViewById(R.id.btn_add).setOnClickListener(v -> showAddTopicDialog());
+        // Bấm Cancel
+        btnCancel.setOnClickListener(v -> hideAddTopicDialog());
+        // Bấm Save
+        btnSave.setOnClickListener(v -> saveTopic());
+
         fetchTopicsAndWordCounts();
     }
 
+    // Hiện dialog thêm topic và overlay mờ
+    private void showAddTopicDialog() {
+        etTopicName.setText("");
+        blurOverlay.setVisibility(View.VISIBLE);
+        addTopicDialog.setVisibility(View.VISIBLE);
+        etTopicName.requestFocus();
+    }
+
+    // Ẩn dialog và overlay
+    private void hideAddTopicDialog() {
+        blurOverlay.setVisibility(View.GONE);
+        addTopicDialog.setVisibility(View.GONE);
+    }
+
+    // Lưu dữ liệu lên Firebase và cập nhật giao diện
+    private void saveTopic() {
+        String topicName = etTopicName.getText().toString().trim();
+        if (TextUtils.isEmpty(topicName)) {
+            etTopicName.setError("Vui lòng nhập tên chủ đề");
+            return;
+        }
+
+        DatabaseReference topicRef = FirebaseDatabase.getInstance().getReference("vocabularyTopics");
+        String topicId = topicRef.push().getKey();
+        if (topicId == null) {
+            Toast.makeText(this, "Không thể tạo chủ đề mới. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Tạo dữ liệu topic mới
+        Map<String, Object> topicData = new HashMap<>();
+        topicData.put("name", topicName);
+
+        // Lưu lên Firebase
+        topicRef.child(topicId).setValue(topicData, (error, ref) -> {
+            if (error == null) {
+                Toast.makeText(this, "Đã thêm chủ đề!", Toast.LENGTH_SHORT).show();
+                hideAddTopicDialog();
+                fetchTopicsAndWordCounts(); // refresh list
+            } else {
+                Toast.makeText(this, "Lỗi khi thêm chủ đề", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     /**
-     * Đúng luồng:
      * 1. Lấy danh sách topic.
      * 2. Lấy toàn bộ words, đếm số lượng theo topic_id.
      * 3. Gán wordCount vào từng topic.

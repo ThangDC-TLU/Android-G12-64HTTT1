@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     android:id="@+id/main">
 
-    <!-- Header CardView (KHÔNG có chữ EziLish, chỉ giữ lại CardView header với mũi tên và tiêu đề) -->
+    <!-- Header CardView -->
     <androidx.cardview.widget.CardView
         android:id="@+id/header_card"
         android:layout_width="0dp"
@@ -81,6 +81,7 @@
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:spanCount="2" />
 
+    <!-- Nút Add Topic -->
     <LinearLayout
         android:id="@+id/add_topic_container"
         android:layout_width="171dp"
@@ -121,6 +122,7 @@
             android:tint="#2196F3" />
     </LinearLayout>
 
+    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_nav"
         android:layout_width="0dp"
@@ -197,6 +199,83 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:contentDescription="@string/desc_user" />
+    </LinearLayout>
+
+    <!-- Overlay mờ (blur) khi bật dialog thêm topic -->
+    <View
+        android:id="@+id/blurOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Dialog thêm topic -->
+    <LinearLayout
+        android:id="@+id/addTopicDialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog"
+        android:padding="24dp"
+        android:elevation="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="24dp">
+
+        <TextView
+            android:id="@+id/tvAddTopicTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm chủ đề mới"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#232323"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/etTopicName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tên chủ đề"
+            android:inputType="text"
+            android:background="@drawable/bg_edittext"
+            android:padding="12dp"
+            android:textColor="#232323"
+            android:textColorHint="#999999"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hủy"
+                android:textColor="#2196F3"
+                android:background="@android:color/transparent"
+                android:padding="8dp"/>
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lưu"
+                android:textColor="#fff"
+                android:backgroundTint="#2196F3"
+                android:layout_marginStart="18dp"
+                android:padding="8dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
