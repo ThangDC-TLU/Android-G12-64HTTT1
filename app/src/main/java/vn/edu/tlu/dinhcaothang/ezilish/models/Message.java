@@ -1,20 +1,18 @@
 package vn.edu.tlu.dinhcaothang.ezilish.models;
 
 public class Message {
-    private String content;
-    private boolean isUser;
+    public String senderId;
+    public String receiverId;
+    public String text;
+    public long timestamp;
 
-    public Message(String content, boolean isUser) {
-        this.content = content;
-        this.isUser = isUser;
-    }
+    public Message() {}
 
-    public String getContent() {
-        return content;
-    }
-
-    public boolean isUser() {
-        return isUser;
+    public Message(String senderId, String receiverId, String text, long timestamp) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.text = text;
+        this.timestamp = timestamp;
     }
 }
 
