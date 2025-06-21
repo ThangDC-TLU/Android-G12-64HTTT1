@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#184BD6"
+    android:fitsSystemWindows="true">
+
+    <!-- Thanh topbar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#184BD6"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back_arrow"
+            android:tint="#1EB9FF" />
+        <TextView
+            android:id="@+id/tvQuizTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quiz_title"
+            android:textColor="#1EB9FF"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <!-- Danh sách câu hỏi -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:padding="16dp"
+        android:clipToPadding="false" />
+
+</RelativeLayout>
