@@ -13,4 +13,5 @@
     <string name="back">Back</string>
     <string name="new_word_icon">New Word</string>
     <string name="phonetic_icon">Phonetic</string>
+    <string name="quiz_title">Quiz Title</string>
 </resources>
