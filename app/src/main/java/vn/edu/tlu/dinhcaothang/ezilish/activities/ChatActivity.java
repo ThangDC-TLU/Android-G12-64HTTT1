@@ -3,6 +3,7 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -29,9 +30,12 @@ import vn.edu.tlu.dinhcaothang.ezilish.models.Message;
 public class ChatActivity extends AppCompatActivity {
     private RecyclerView rvMessages;
     private EditText etMessage;
+    private TextView tvReceiverName;
     private ImageButton btnSend, btnBack;
+
     private List<Message> messageList = new ArrayList<>();
     private MessageAdapter adapter;
+
     private String currentUserId, receiverId, chatId;
     private DatabaseReference messageRef;
 
@@ -48,28 +52,30 @@ public class ChatActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Lấy thông tin
+        // Lấy dữ liệu từ Intent
         currentUserId = getIntent().getStringExtra("currentUserId");
         receiverId = getIntent().getStringExtra("receiverId");
         chatId = generateChatId(currentUserId, receiverId);
 
-        // Init view
+        // Ánh xạ view
         btnBack = findViewById(R.id.btnBack);
         btnSend = findViewById(R.id.btnSend);
         etMessage = findViewById(R.id.etMessage);
         rvMessages = findViewById(R.id.rvMessages);
+        tvReceiverName = findViewById(R.id.tvReceiverName);
 
+        // Thiết lập RecyclerView
         adapter = new MessageAdapter(messageList, currentUserId);
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
         rvMessages.setAdapter(adapter);
 
         btnBack.setOnClickListener(v -> onBackPressed());
+        btnSend.setOnClickListener(v -> sendMessage());
 
         messageRef = FirebaseDatabase.getInstance().getReference("messages").child(chatId);
 
-        btnSend.setOnClickListener(v -> sendMessage());
-
         loadMessages();
+        loadReceiverName();
     }
 
     private String generateChatId(String user1, String user2) {
@@ -92,10 +98,28 @@ public class ChatActivity extends AppCompatActivity {
                 messageList.clear();
                 for (DataSnapshot msgSnap : snapshot.getChildren()) {
                     Message msg = msgSnap.getValue(Message.class);
-                    messageList.add(msg);
+                    if (msg != null) {
+                        messageList.add(msg);
+                    }
                 }
                 adapter.notifyDataSetChanged();
-                rvMessages.scrollToPosition(messageList.size() - 1);
+                rvMessages.post(() -> rvMessages.scrollToPosition(messageList.size() - 1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void loadReceiverName() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(receiverId);
+        userRef.child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = snapshot.getValue(String.class);
+                if (name != null) {
+                    tvReceiverName.setText(name);
+                }
             }
 
             @Override
