@@ -1,5 +1,6 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,8 +43,10 @@ public class WordListActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish()); // Quay lại trang topic
 
-        btnAddWord.setOnClickListener(v -> {
-            // Hiện dialog thêm từ (nếu muốn)
+        findViewById(R.id.btnAddWord).setOnClickListener(v -> {
+            Intent intent = new Intent(this, AddWordActivity.class);
+            intent.putExtra("topicId", topicId);
+            startActivity(intent);
         });
 
         fetchWords();

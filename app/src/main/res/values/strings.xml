@@ -10,4 +10,7 @@
     <string name="desc_home">Home icon</string>
     <string name="desc_menu">Menu icon</string>
     <string name="desc_user">User icon</string>
+    <string name="back">Back</string>
+    <string name="new_word_icon">New Word</string>
+    <string name="phonetic_icon">Phonetic</string>
 </resources>
