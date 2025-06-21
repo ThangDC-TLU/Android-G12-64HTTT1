@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-// Thêm import cho Retrofit
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.OxfordResponse;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.OxfordApi;
+import java.util.List;
+import vn.edu.tlu.dinhcaothang.ezilish.activities.FreeDictionaryApi;
+import vn.edu.tlu.dinhcaothang.ezilish.activities.FreeDictionaryResponse;
 
 public class AddWordActivity extends AppCompatActivity {
     private EditText etWord, etPhonetic, etExplanation, etExample, etMeaning;
@@ -25,8 +25,7 @@ public class AddWordActivity extends AppCompatActivity {
 
     private String topicId;
 
-    // Khai báo OxfordApi
-    private OxfordApi oxfordApi;
+    private FreeDictionaryApi freeDictionaryApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +42,15 @@ public class AddWordActivity extends AppCompatActivity {
 
         topicId = getIntent().getStringExtra("topicId");
 
-        // Khởi tạo Retrofit & OxfordApi
+        // Khởi tạo Retrofit & API
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://od-api-sandbox.oxforddictionaries.com/api/v2/")
+                .baseUrl("https://api.dictionaryapi.dev/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        oxfordApi = retrofit.create(OxfordApi.class);
+        freeDictionaryApi = retrofit.create(FreeDictionaryApi.class);
 
-        // Khi ấn back
         btnBack.setOnClickListener(v -> finish());
 
-        // Tự động kiểm tra từ và sinh phonetic bằng Oxford API
         etWord.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
@@ -65,50 +62,36 @@ public class AddWordActivity extends AppCompatActivity {
                     etPhonetic.setError(null);
                     return;
                 }
-                getPhoneticWithOxford(word);
+                getPhoneticWithFreeDictionary(word);
             }
         });
 
         btnAddWord.setOnClickListener(v -> addWord());
     }
 
-    // Hàm gọi Oxford API lấy phiên âm
-    private void getPhoneticWithOxford(String word) {
+    private void getPhoneticWithFreeDictionary(String word) {
         if (!word.matches("^[a-zA-Z]+$")) {
             etPhonetic.setText("");
             etPhonetic.setError("Invalid word!");
             Toast.makeText(this, "Từ không hợp lệ, vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
             return;
         }
-        oxfordApi.getEnglishWord(word.toLowerCase()).enqueue(new Callback<OxfordResponse>() {
+        freeDictionaryApi.getWord(word.toLowerCase()).enqueue(new Callback<List<FreeDictionaryResponse>>() {
             @Override
-            public void onResponse(Call<OxfordResponse> call, Response<OxfordResponse> response) {
-                if (response.isSuccessful() && response.body() != null &&
-                        response.body().results != null && !response.body().results.isEmpty()) {
-                    String ipa = null;
-                    for (OxfordResponse.Result result : response.body().results) {
-                        if (result.lexicalEntries != null) {
-                            for (OxfordResponse.LexicalEntry lex : result.lexicalEntries) {
-                                if (lex.entries != null) {
-                                    for (OxfordResponse.Entry entry : lex.entries) {
-                                        if (entry.pronunciations != null) {
-                                            for (OxfordResponse.Pronunciation pro : entry.pronunciations) {
-                                                if (pro.phoneticSpelling != null) {
-                                                    ipa = pro.phoneticSpelling;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        if (ipa != null) break;
-                                    }
-                                }
-                                if (ipa != null) break;
+            public void onResponse(Call<List<FreeDictionaryResponse>> call, Response<List<FreeDictionaryResponse>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    List<FreeDictionaryResponse.Phonetic> phonetics = response.body().get(0).phonetics;
+                    String ipa = "";
+                    if (phonetics != null) {
+                        for (FreeDictionaryResponse.Phonetic p : phonetics) {
+                            if (p.text != null && !p.text.isEmpty()) {
+                                ipa = p.text;
+                                break;
                             }
                         }
-                        if (ipa != null) break;
                     }
-                    if (ipa != null && !ipa.isEmpty()) {
-                        etPhonetic.setText("/" + ipa + "/");
+                    if (!ipa.isEmpty()) {
+                        etPhonetic.setText(ipa);
                         etPhonetic.setError(null);
                     } else {
                         etPhonetic.setText("");
@@ -123,7 +106,7 @@ public class AddWordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<OxfordResponse> call, Throwable t) {
+            public void onFailure(Call<List<FreeDictionaryResponse>> call, Throwable t) {
                 etPhonetic.setText("");
                 etPhonetic.setError("Error connecting API!");
                 Toast.makeText(AddWordActivity.this, "Lỗi kết nối API!", Toast.LENGTH_SHORT).show();
@@ -150,7 +133,7 @@ public class AddWordActivity extends AppCompatActivity {
         wordsRef.child(id).setValue(w, (error, ref) -> {
             if (error == null) {
                 Toast.makeText(this, "Word added!", Toast.LENGTH_SHORT).show();
-                finish(); // Quay lại
+                finish();
             } else {
                 Toast.makeText(this, "Failed to add word!", Toast.LENGTH_SHORT).show();
             }
