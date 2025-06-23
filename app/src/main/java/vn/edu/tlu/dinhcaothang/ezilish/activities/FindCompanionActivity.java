@@ -29,6 +29,7 @@ import com.google.firebase.database.*;
 import java.util.*;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.LocationUtils;
 
 public class FindCompanionActivity extends AppCompatActivity {
     private FrameLayout cardContainer;
@@ -145,7 +146,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                     Map<String, Object> locationMap = (Map<String, Object>) userData.get("location");
                     double lat = Double.parseDouble(locationMap.get("latitude").toString());
                     double lng = Double.parseDouble(locationMap.get("longitude").toString());
-                    double distance = calculateDistance(myLat, myLng, lat, lng);
+                    double distance = LocationUtils.calculateDistance(myLat, myLng, lat, lng);
                     if (distance <= 50.0) {
                         userData.put("distance", distance);
                         userData.put("id", userSnapshot.getKey());
@@ -183,7 +184,7 @@ public class FindCompanionActivity extends AppCompatActivity {
         ImageView imageView = card.findViewById(R.id.user_image);
 
         tvNameAge.setText(userData.get("username") + ", 20");
-        tvResidence.setText(getLocalityFromCoordinates(myLat, myLng));
+        tvResidence.setText(LocationUtils.getLocalityFromCoordinates(this,myLat, myLng));
         tvDistance.setText(distance + " KM");
 
         cardContainer.addView(card);
@@ -268,37 +269,5 @@ public class FindCompanionActivity extends AppCompatActivity {
         });
 
         dialog.show();
-    }
-
-    // Lấy địa phương từ tọa độ (latitude, longitude)
-    public String getLocalityFromCoordinates(double lat, double lng) {
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                String locality = address.getLocality();
-                if (locality == null || locality.isEmpty()) {
-                    locality = address.getAdminArea(); // fallback
-                }
-                return locality != null ? locality : "Không xác định";
-            }
-        } catch (IOException e) {
-            Log.e("GeocoderError", "Lỗi lấy địa chỉ: " + e.getMessage());
-        }
-        return "Không xác định";
-    }
-
-
-    // Tính khoảng cách giữa 2 tọa độ (km)
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return Math.round(R * c * 100.0) / 100.0;
     }
 }
