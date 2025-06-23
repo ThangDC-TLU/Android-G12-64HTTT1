@@ -15,8 +15,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.util.List;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.FreeDictionaryApi;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.FreeDictionaryResponse;
+
+import vn.edu.tlu.dinhcaothang.ezilish.models.Word;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.FreeDictionaryApi;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.FreeDictionaryResponse;
 
 public class AddWordActivity extends AppCompatActivity {
     private EditText etWord, etPhonetic, etExplanation, etExample, etMeaning;

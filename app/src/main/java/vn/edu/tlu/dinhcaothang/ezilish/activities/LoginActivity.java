@@ -55,8 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);

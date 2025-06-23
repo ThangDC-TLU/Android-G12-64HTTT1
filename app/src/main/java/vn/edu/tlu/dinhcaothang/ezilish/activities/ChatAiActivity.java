@@ -59,7 +59,7 @@ public class ChatAiActivity extends AppCompatActivity {
             return insets;
         });
 
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         // Lấy email người dùng từ Intent
         userEmail = getIntent().getStringExtra("email");

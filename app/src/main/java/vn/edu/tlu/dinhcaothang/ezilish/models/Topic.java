@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.models;
 
 public class Topic {
     public String id;

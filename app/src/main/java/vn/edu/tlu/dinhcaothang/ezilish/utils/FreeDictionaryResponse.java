@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.utils;
 
 
 

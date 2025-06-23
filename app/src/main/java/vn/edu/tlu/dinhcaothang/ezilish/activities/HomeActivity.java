@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         TextView tvUserName = findViewById(R.id.tvUserName);
         String username = getIntent().getStringExtra("username");

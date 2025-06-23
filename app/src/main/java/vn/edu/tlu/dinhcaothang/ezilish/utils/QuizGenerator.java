@@ -1,7 +1,8 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.utils;
 
 import android.os.AsyncTask;
 import okhttp3.*;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;

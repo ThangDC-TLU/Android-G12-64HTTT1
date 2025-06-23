@@ -1,6 +1,9 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.adapters.VocabularyTopicAdapter;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;

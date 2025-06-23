@@ -1,6 +1,8 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.adapters;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.QuizQuestion;
+
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;

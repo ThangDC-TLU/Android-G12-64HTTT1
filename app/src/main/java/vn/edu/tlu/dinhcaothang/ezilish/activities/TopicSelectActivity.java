@@ -11,8 +11,8 @@ import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.TopicAdapter;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.Topic;
+import vn.edu.tlu.dinhcaothang.ezilish.adapters.TopicAdapter;
+import vn.edu.tlu.dinhcaothang.ezilish.models.Topic;
 
 public class TopicSelectActivity extends AppCompatActivity {
 
