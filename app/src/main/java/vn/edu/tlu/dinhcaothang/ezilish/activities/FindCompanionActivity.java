@@ -1,10 +1,8 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,23 +14,22 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.*;
 
 import java.util.*;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.ImageUtils;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.LocationUtils;
 
 public class FindCompanionActivity extends AppCompatActivity {
     private FrameLayout cardContainer;
     private ImageButton btnBack, btnDislike, btnLike, btnRefresh;
-    private FusedLocationProviderClient fusedLocationClient;
+
     private double myLat, myLng;
     private String currentUserEmail = "";
     private String currentUserId = "";
@@ -54,24 +51,27 @@ public class FindCompanionActivity extends AppCompatActivity {
 
         if (getSupportActionBar() != null) getSupportActionBar().hide();
 
+        // Lấy email của user hiện tại từ Intent
         currentUserEmail = getIntent().getStringExtra("email");
 
+        // Ánh xạ các view
         btnBack = findViewById(R.id.btnBack);
         cardContainer = findViewById(R.id.cardContainer);
         btnDislike = findViewById(R.id.btnDislike);
         btnLike = findViewById(R.id.btnLike);
         btnRefresh = findViewById(R.id.btnRefresh);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        // Bắt sự kiện nút
         btnBack.setOnClickListener(v -> onBackPressed());
         btnDislike.setOnClickListener(v -> showNextUser());
         btnLike.setOnClickListener(v -> handleLikeAction());
-        btnRefresh.setOnClickListener(v -> requestLocationAndLoadUsers());
+        btnRefresh.setOnClickListener(v -> requestLocationFromFirebase());
 
-        findCurrentUserIdByEmail(currentUserEmail, this::requestLocationAndLoadUsers);
+        // Lấy userId dựa vào email trước khi load vị trí
+        findCurrentUserIdByEmail(currentUserEmail, this::requestLocationFromFirebase);
     }
 
+    // Tìm userId tương ứng với email hiện tại
     private void findCurrentUserIdByEmail(String email, Runnable onFound) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,22 +92,35 @@ public class FindCompanionActivity extends AppCompatActivity {
         });
     }
 
-    private void requestLocationAndLoadUsers() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
+    // Lấy vị trí đã lưu của user từ Firebase
+    private void requestLocationFromFirebase() {
+        if (currentUserId.isEmpty()) return;
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-                myLat = location.getLatitude();
-                myLng = location.getLongitude();
-                loadNearbyUsers();
+        DatabaseReference locationRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(currentUserId).child("location");
+
+        locationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Double lat = snapshot.child("latitude").getValue(Double.class);
+                    Double lng = snapshot.child("longitude").getValue(Double.class);
+                    if (lat != null && lng != null) {
+                        myLat = lat;
+                        myLng = lng;
+                        loadNearbyUsers();
+                    }
+                } else {
+                    showNoUsersMessage();
+                }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
+    // Tải danh sách người dùng gần đó trong bán kính 50km
     private void loadNearbyUsers() {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,8 +141,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                     Map<String, Object> locationMap = (Map<String, Object>) userData.get("location");
                     double lat = Double.parseDouble(locationMap.get("latitude").toString());
                     double lng = Double.parseDouble(locationMap.get("longitude").toString());
-                    double distance = calculateDistance(myLat, myLng, lat, lng);
-
+                    double distance = LocationUtils.calculateDistance(myLat, myLng, lat, lng);
                     if (distance <= 50.0) {
                         userData.put("distance", distance);
                         userData.put("id", userSnapshot.getKey());
@@ -138,7 +150,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                 }
 
                 if (!nearbyUsers.isEmpty()) {
-                    showUserCard(currentIndex);
+                    showUserCard(currentIndex, nearbyUsers.get(currentIndex).get("id").toString());
                 } else {
                     showNoUsersMessage();
                 }
@@ -149,7 +161,8 @@ public class FindCompanionActivity extends AppCompatActivity {
         });
     }
 
-    private void showUserCard(int index) {
+    // Hiển thị thông tin người dùng ở vị trí index
+    private void showUserCard(int index, String userId) {
         if (index >= nearbyUsers.size()) {
             showNoUsersMessage();
             return;
@@ -165,18 +178,21 @@ public class FindCompanionActivity extends AppCompatActivity {
         TextView tvDistance = card.findViewById(R.id.user_distance);
         ImageView imageView = card.findViewById(R.id.user_image);
 
+        imageView.setImageResource(ImageUtils.loadAvatarIntoImageView(userId, this, imageView));
         tvNameAge.setText(userData.get("username") + ", 20");
-        tvResidence.setText("Hà Nội");
+        tvResidence.setText(LocationUtils.getLocalityFromCoordinates(this,myLat, myLng));
         tvDistance.setText(distance + " KM");
 
         cardContainer.addView(card);
     }
 
+    // Chuyển sang người tiếp theo
     private void showNextUser() {
         currentIndex++;
-        showUserCard(currentIndex);
+        showUserCard(currentIndex, currentUserId);
     }
 
+    // Hiển thị khi không có người nào gần
     private void showNoUsersMessage() {
         cardContainer.removeAllViews();
         TextView message = new TextView(this);
@@ -185,6 +201,7 @@ public class FindCompanionActivity extends AppCompatActivity {
         cardContainer.addView(message);
     }
 
+    // Xử lý khi nhấn "like"
     private void handleLikeAction() {
         if (currentIndex >= nearbyUsers.size() || currentUserId.isEmpty()) return;
 
@@ -217,6 +234,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                 });
     }
 
+    // Hiển thị dialog match thành công
     private void showMatchDialog(String myId, String myEmail, String matchedId, String matchedUsername) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.match_dialog, null);
 
@@ -236,13 +254,8 @@ public class FindCompanionActivity extends AppCompatActivity {
         dialogView.findViewById(R.id.send_message_button).setOnClickListener(v -> {
             dialog.dismiss();
             Intent intent = new Intent(FindCompanionActivity.this, ChatActivity.class);
-//            intent.putExtra("currentUserId", myId);
-//            intent.putExtra("currentUserEmail", myEmail);
-//            intent.putExtra("matchedUserId", matchedId);
-//            intent.putExtra("matchedUsername", matchedUsername);
-            intent.putExtra("currentUserId", currentUserId);
+            intent.putExtra("currentUserId", myId);
             intent.putExtra("receiverId", matchedId);
-            startActivity(intent);
             startActivity(intent);
         });
 
@@ -252,16 +265,5 @@ public class FindCompanionActivity extends AppCompatActivity {
         });
 
         dialog.show();
-    }
-
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double R = 6371;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return Math.round(R * c * 100.0) / 100.0;
     }
 }

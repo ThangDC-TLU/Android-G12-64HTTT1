@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.adapters.ConversationAdapter;
 import vn.edu.tlu.dinhcaothang.ezilish.models.Conversation;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.BottomNavHelper;
 
 public class ConversationActivity extends AppCompatActivity {
 
@@ -64,6 +66,13 @@ public class ConversationActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         findCurrentUserId();
+
+        // Gán bottom navigation
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        bottomNav.setSelectedItemId(R.id.nav_conversation); // Đánh dấu Home đang được chọn
+
+        // Cài đặt menu
+        BottomNavHelper.setupNavigation(bottomNav, this, getIntent().getStringExtra("username"), getIntent().getStringExtra("email"));
     }
 
     private void findCurrentUserId() {
