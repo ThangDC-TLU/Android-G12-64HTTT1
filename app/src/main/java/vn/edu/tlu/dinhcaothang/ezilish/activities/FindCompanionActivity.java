@@ -18,17 +18,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.location.Address;
-import android.location.Geocoder;
-
-import java.io.IOException;
-import java.util.Locale;
-
 import com.google.firebase.database.*;
 
 import java.util.*;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.ImageUtils;
 import vn.edu.tlu.dinhcaothang.ezilish.utils.LocationUtils;
 
 public class FindCompanionActivity extends AppCompatActivity {
@@ -155,7 +150,7 @@ public class FindCompanionActivity extends AppCompatActivity {
                 }
 
                 if (!nearbyUsers.isEmpty()) {
-                    showUserCard(currentIndex);
+                    showUserCard(currentIndex, nearbyUsers.get(currentIndex).get("id").toString());
                 } else {
                     showNoUsersMessage();
                 }
@@ -167,7 +162,7 @@ public class FindCompanionActivity extends AppCompatActivity {
     }
 
     // Hiển thị thông tin người dùng ở vị trí index
-    private void showUserCard(int index) {
+    private void showUserCard(int index, String userId) {
         if (index >= nearbyUsers.size()) {
             showNoUsersMessage();
             return;
@@ -183,6 +178,7 @@ public class FindCompanionActivity extends AppCompatActivity {
         TextView tvDistance = card.findViewById(R.id.user_distance);
         ImageView imageView = card.findViewById(R.id.user_image);
 
+        imageView.setImageResource(ImageUtils.loadAvatarIntoImageView(userId, this, imageView));
         tvNameAge.setText(userData.get("username") + ", 20");
         tvResidence.setText(LocationUtils.getLocalityFromCoordinates(this,myLat, myLng));
         tvDistance.setText(distance + " KM");
@@ -193,7 +189,7 @@ public class FindCompanionActivity extends AppCompatActivity {
     // Chuyển sang người tiếp theo
     private void showNextUser() {
         currentIndex++;
-        showUserCard(currentIndex);
+        showUserCard(currentIndex, currentUserId);
     }
 
     // Hiển thị khi không có người nào gần

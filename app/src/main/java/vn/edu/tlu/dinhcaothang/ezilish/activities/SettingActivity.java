@@ -83,7 +83,7 @@ public class SettingActivity extends AppCompatActivity {
         // Xem ảnh full screen
         imgAvatar.setOnClickListener(v -> {
             if (userId != null) {
-                ImageUtils.loadAvatarBase64(userId, this, bitmap -> {
+                ImageUtils.loadAvatarBitmap(userId, this, bitmap -> {
                     View dialogView = LayoutInflater.from(this)
                             .inflate(R.layout.dialog_view_avatar, null);
                     ImageView fullImg = dialogView.findViewById(R.id.imgFullAvatar);
@@ -120,7 +120,7 @@ public class SettingActivity extends AppCompatActivity {
                     String userEmail = userSnap.child("email").getValue(String.class);
                     if (email != null && email.equalsIgnoreCase(userEmail)) {
                         userId = userSnap.getKey();
-                        ImageUtils.loadAvatarBase64(userId, SettingActivity.this, imgAvatar);
+                        ImageUtils.loadAvatarIntoImageView(userId, SettingActivity.this, imgAvatar);
                         break;
                     }
                 }
