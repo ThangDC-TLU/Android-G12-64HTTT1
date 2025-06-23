@@ -52,7 +52,7 @@ public class FindCompanionActivity extends AppCompatActivity {
             return insets;
         });
 
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         currentUserEmail = getIntent().getStringExtra("email");
 
