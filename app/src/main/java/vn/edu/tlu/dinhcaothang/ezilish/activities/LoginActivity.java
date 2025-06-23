@@ -1,12 +1,15 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -32,7 +35,7 @@ import vn.edu.tlu.dinhcaothang.ezilish.R;
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private Button btnLogin;
-    private TextView tvSignUp, tvForgotPassword;
+    private TextView tvSignUp;
     private CheckBox cbRememberMe;
     private SharedPreferences sharedPreferences;
     private DatabaseReference databaseReference;
@@ -40,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private String currentUserId = null;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +66,12 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvSignUp = findViewById(R.id.tvSignUp);
-        tvForgotPassword = findViewById(R.id.tvForgotPassword);
         cbRememberMe = findViewById(R.id.cbRememberMe);
 
         loadSavedCredentials();
+        fillFromIntent();
 
         tvSignUp.setOnClickListener(v -> startActivity(new Intent(this, SignUpActivity.class)));
-        tvForgotPassword.setOnClickListener(v ->
-                Toast.makeText(this, "Forgot Password feature not implemented yet", Toast.LENGTH_SHORT).show());
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -79,6 +81,39 @@ public class LoginActivity extends AppCompatActivity {
                 checkLogin(email, password);
             }
         });
+
+        setupPasswordToggle();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupPasswordToggle() {
+        etPassword.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (etPassword.getRight() - etPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    isPasswordVisible = !isPasswordVisible;
+                    if (isPasswordVisible) {
+                        etPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_opened, 0);
+                    } else {
+                        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_closed, 0);
+                    }
+                    etPassword.setSelection(etPassword.getText().length());
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    private void fillFromIntent() {
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        String password = intent.getStringExtra("password");
+
+        if (email != null) etEmail.setText(email);
+        if (password != null) etPassword.setText(password);
     }
 
     private void loadSavedCredentials() {
@@ -104,11 +139,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateInputs(String email, String password) {
         if (email.isEmpty()) {
-            etEmail.setError("Email is required");
+            etEmail.setError("Vui lòng nhập email");
             return false;
         }
         if (password.isEmpty()) {
-            etPassword.setError("Password is required");
+            etPassword.setError("Vui lòng nhập mật khẩu");
             return false;
         }
         return true;
@@ -127,9 +162,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (storedPassword != null && storedPassword.equals(password)) {
                                     saveCredentials(email, password);
-                                    currentUserId = userSnapshot.getKey(); // Lưu userId để update vị trí
+                                    currentUserId = userSnapshot.getKey();
 
-                                    // Yêu cầu quyền vị trí
                                     if (ContextCompat.checkSelfPermission(LoginActivity.this,
                                             Manifest.permission.ACCESS_FINE_LOCATION)
                                             != PackageManager.PERMISSION_GRANTED) {
@@ -140,7 +174,6 @@ public class LoginActivity extends AppCompatActivity {
                                         updateUserLocation();
                                     }
 
-                                    // Điều hướng
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     intent.putExtra("username", username);
                                     intent.putExtra("email", storedEmail);
@@ -149,15 +182,15 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 }
                             }
-                            Toast.makeText(LoginActivity.this, "Invalid password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Email not found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Không tìm thấy email", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError error) {
-                        Toast.makeText(LoginActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Lỗi kết nối cơ sở dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -169,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
             if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) {
                 updateUserLocation();
             } else {
-                Toast.makeText(this, "Permission denied to access location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Từ chối quyền truy cập vị trí", Toast.LENGTH_SHORT).show();
             }
         }
     }

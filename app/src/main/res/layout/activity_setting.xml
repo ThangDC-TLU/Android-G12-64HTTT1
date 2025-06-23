@@ -70,19 +70,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnUpdateInfo"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CẬP NHẬT THÔNG TIN"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:backgroundTint="#1E90FF"
-            app:cornerRadius="32dp"
-            android:layout_marginTop="16dp"
-            android:padding="15dp"/>
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnChangePassword"
