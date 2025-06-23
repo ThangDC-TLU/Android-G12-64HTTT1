@@ -20,15 +20,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/imgAvatar"
+        <FrameLayout
+            android:id="@+id/avatarContainer"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/img_profile"
-            android:scaleType="centerCrop"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_circle"
-            android:clipToOutline="true"/>
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_profile"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_circle"
+                android:clipToOutline="true" />
+
+            <ImageView
+                android:id="@+id/imgEditAvatar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/camera"
+                android:background="@drawable/bg_circle_white"
+                android:padding="4dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="4dp" />
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/tvUsername"

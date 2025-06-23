@@ -1,15 +1,24 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,10 +28,13 @@ import com.google.firebase.database.*;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.utils.BottomNavHelper;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.ImageUtils;
 
 public class SettingActivity extends AppCompatActivity {
 
     private String email, username, userId;
+    private ImageView imgAvatar, imgEditAvatar;
+    private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +53,61 @@ public class SettingActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         username = getIntent().getStringExtra("username");
 
-        // Gán bottom navigation
+        imgAvatar = findViewById(R.id.imgAvatar);
+        imgEditAvatar = findViewById(R.id.imgEditAvatar);
+
+        // Launcher chọn ảnh từ thư viện
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null && userId != null) {
+                        ImageUtils.uploadAvatarBase64(uri, userId, this, imgAvatar);
+                    }
+                }
+        );
+
+        // Click biểu tượng máy ảnh -> chọn ảnh
+        imgEditAvatar.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 1001);
+                } else {
+                    pickImageFromGallery();
+                }
+            } else {
+                pickImageFromGallery();
+            }
+        });
+
+        // Xem ảnh full screen
+        imgAvatar.setOnClickListener(v -> {
+            if (userId != null) {
+                ImageUtils.loadAvatarBase64(userId, this, bitmap -> {
+                    View dialogView = LayoutInflater.from(this)
+                            .inflate(R.layout.dialog_view_avatar, null);
+                    ImageView fullImg = dialogView.findViewById(R.id.imgFullAvatar);
+                    fullImg.setImageBitmap(bitmap);
+
+                    AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+                            .setView(dialogView)
+                            .create();
+
+                    dialogView.setOnClickListener(view -> dialog.dismiss());
+                    dialog.show();
+                });
+            }
+        });
+
+        // Bottom Nav
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setSelectedItemId(R.id.nav_setting);
         BottomNavHelper.setupNavigation(bottomNav, this, username, email);
 
-        // Tìm userId từ email
+        // Lấy userId
         getUserIdByEmail();
 
-        // Xử lý đổi mật khẩu
         findViewById(R.id.btnChangePassword).setOnClickListener(v -> showChangePasswordDialog());
-
-        // Xử lý đăng xuất
         findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
     }
 
@@ -65,6 +120,7 @@ public class SettingActivity extends AppCompatActivity {
                     String userEmail = userSnap.child("email").getValue(String.class);
                     if (email != null && email.equalsIgnoreCase(userEmail)) {
                         userId = userSnap.getKey();
+                        ImageUtils.loadAvatarBase64(userId, SettingActivity.this, imgAvatar);
                         break;
                     }
                 }
@@ -77,9 +133,25 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
+    private void pickImageFromGallery() {
+        imagePickerLauncher.launch("image/*");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001 && grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            pickImageFromGallery();
+        } else {
+            Toast.makeText(this, "Bạn cần cấp quyền để chọn ảnh", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void showChangePasswordDialog() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.dialog_change_password, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null);
 
         EditText etCurrent = view.findViewById(R.id.etCurrentPassword);
         EditText etNew = view.findViewById(R.id.etNewPassword);
@@ -98,7 +170,7 @@ public class SettingActivity extends AppCompatActivity {
             String confirm = etConfirm.getText().toString().trim();
 
             if (current.isEmpty() || newPass.isEmpty() || confirm.isEmpty()) {
-                Toast.makeText(this, "Vui lòng điền đầy đủ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng điền đủ", Toast.LENGTH_SHORT).show();
                 return;
             }
 
