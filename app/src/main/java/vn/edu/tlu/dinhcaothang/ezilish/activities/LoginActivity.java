@@ -206,42 +206,36 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void updateUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Ứng dụng chưa được cấp quyền vị trí", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        LocationRequest locationRequest = LocationRequest.create()
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-                .setInterval(1000)
-                .setNumUpdates(1);
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                .addOnSuccessListener(location -> {
+                    if (location != null && currentUserId != null) {
+                        double lat = location.getLatitude();
+                        double lng = location.getLongitude();
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult result) {
-                if (result != null && result.getLastLocation() != null && currentUserId != null) {
-                    Location location = result.getLastLocation();
-                    double lat = location.getLatitude();
-                    double lng = location.getLongitude();
+                        Map<String, Object> locationMap = new HashMap<>();
+                        locationMap.put("latitude", lat);
+                        locationMap.put("longitude", lng);
+                        locationMap.put("updated_at", System.currentTimeMillis());
 
-                    Map<String, Object> locationMap = new HashMap<>();
-                    locationMap.put("latitude", lat);
-                    locationMap.put("longitude", lng);
-                    locationMap.put("updated_at", System.currentTimeMillis());
-
-                    databaseReference.child(currentUserId).child("location").setValue(locationMap)
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(LoginActivity.this, "Cập nhật vị trí thành công", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(LoginActivity.this, "Cập nhật vị trí thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                } else {
-                    Toast.makeText(LoginActivity.this, "Không lấy được vị trí", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, Looper.getMainLooper());
+                        databaseReference.child(currentUserId).child("location").setValue(locationMap)
+                                .addOnSuccessListener(unused ->
+                                        Toast.makeText(LoginActivity.this, "Cập nhật vị trí thành công", Toast.LENGTH_SHORT).show())
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(LoginActivity.this, "Lỗi khi cập nhật vị trí: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(LoginActivity.this, "Lỗi lấy vị trí: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
 
 }
