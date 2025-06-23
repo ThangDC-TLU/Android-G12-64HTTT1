@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#FFFFFF"
-    android:id="@+id/main">
+    android:background="#FFFFFF">
 
-    <!-- Logo "E" -->
+    <!-- Logo -->
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_marginTop="40dp"
-    android:src="@drawable/ic_logo" />
+        android:src="@drawable/ic_logo" />
 
     <!-- Tab Sign up / Sign in -->
     <LinearLayout
@@ -40,6 +40,7 @@
             android:background="#CCCCCC" />
 
         <TextView
+            android:id="@+id/tvSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign in"
@@ -56,76 +57,64 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-    android:layout_marginTop="40dp"
-    android:background="@drawable/edittext_border"
-    android:fontFamily="sans-serif"
-    android:hint="Email"
-    android:inputType="textEmailAddress"
-    android:padding="12dp"
-    android:textSize="16sp" />
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edittext_border"
+        android:fontFamily="sans-serif"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:textSize="16sp" />
 
-    <!-- Password Field -->
+    <!-- Password Field with eye icon -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-    android:hint="Password"
-    android:textSize="16sp"
-    android:fontFamily="sans-serif"
-    android:inputType="textPassword"
-    android:layout_marginTop="16dp"
-    android:padding="12dp"
-    android:background="@drawable/edittext_border">
-    <requestFocus />
-</EditText>
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_border"
+        android:hint="Password"
+        android:fontFamily="sans-serif"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:drawableEnd="@drawable/ic_eye_closed"
+        android:drawableRight="@drawable/ic_eye_closed"
+        android:drawablePadding="10dp" />
 
-    <!-- Remember me and Forgot Password -->
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:layout_marginStart="16dp"
-android:layout_marginEnd="16dp"
-    android:layout_marginTop="16dp">
+    <!-- Remember me -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp">
 
-<CheckBox
-android:id="@+id/cbRememberMe"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Remember me"
-android:textColor="#000000"
-android:textSize="16sp"
-android:fontFamily="sans-serif" />
-
-<TextView
-android:id="@+id/tvForgotPassword"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_gravity="center_vertical"
-android:layout_weight="1"
-android:layout_marginStart="16dp"
-android:text="Forgot Password"
-android:textColor="#1E90FF"
-android:textSize="16sp"
-android:fontFamily="sans-serif"
-android:gravity="end" />
+        <CheckBox
+            android:id="@+id/cbRememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif" />
     </LinearLayout>
 
     <!-- Log in Button -->
-<Button
-android:id="@+id/btnLogin"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:text="LOG IN"
-android:textSize="18sp"
-android:textColor="#FFFFFF"
-android:fontFamily="sans-serif-medium"
-android:backgroundTint="#1E90FF"
-android:padding="14dp"
-android:layout_marginStart="16dp"
-android:layout_marginEnd="16dp"
-    android:layout_marginTop="32dp" />
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        android:padding="14dp"
+        android:text="LOG IN"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:backgroundTint="#1E90FF" />
 
-    </LinearLayout>
+</LinearLayout>

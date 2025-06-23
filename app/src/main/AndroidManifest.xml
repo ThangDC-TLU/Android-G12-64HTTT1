@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="vn.edu.tlu.dinhcaothang.ezilish">
-
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,6 +26,24 @@
         <activity
             android:name=".activities.VocabularyTopicActivity"
             android:exported="true" />
+         <activity
+            android:name=".activities.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ConversationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.FindCompanionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChatAiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.SignUpActivity"
             android:exported="false" />
@@ -38,7 +60,7 @@
         </activity>
         <activity
             android:name=".activities.WordListActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>
