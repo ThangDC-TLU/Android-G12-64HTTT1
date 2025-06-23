@@ -53,14 +53,14 @@
         android:id="@+id/btnAddWord"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rounded_corner_addword"
         android:text="+ ADD A NEW WORD"
         android:textAllCaps="true"
-        android:textColor="#2196F3"
-        android:textStyle="bold"
+        android:textColor="#F3F5F8"
         android:textSize="16sp"
-        android:background="@drawable/rounded_corner_addword"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="6dp"/>
+        android:textStyle="bold" />
 
     <!-- Word list -->
     <androidx.recyclerview.widget.RecyclerView

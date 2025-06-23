@@ -32,12 +32,12 @@
 
             <ImageView
                 android:id="@+id/back_arrow"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="41dp"
+                android:layout_height="56dp"
                 android:contentDescription="@string/desc_back_arrow"
                 android:padding="6dp"
                 android:src="@drawable/ic_back_arrow"
-                android:tint="#1B60AF" />
+                android:tint="#0777FD" />
 
             <TextView
                 android:id="@+id/header_title"

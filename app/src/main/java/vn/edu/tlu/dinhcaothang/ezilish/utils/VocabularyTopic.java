@@ -4,14 +4,16 @@ public class VocabularyTopic {
     private String id;
     private String name;
     private int wordCount;
+    private String email;
 
     public VocabularyTopic() {
     }
 
-    public VocabularyTopic(String id, String name, int wordCount) {
+    public VocabularyTopic(String id, String name, int wordCount, String email) {
         this.id = id;
         this.name = name;
         this.wordCount = wordCount;
+        this.email = email;
     }
 
     public String getId() {
@@ -37,4 +39,6 @@ public class VocabularyTopic {
     public void setWordCount(int wordCount) {
         this.wordCount = wordCount;
     }
+
+    public void setEmail(String email) {this.email = email;}
 }

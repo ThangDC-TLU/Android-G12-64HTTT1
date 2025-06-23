@@ -162,6 +162,8 @@ public class LoginActivity extends AppCompatActivity {
                                 if (storedPassword != null && storedPassword.equals(password)) {
                                     saveCredentials(email, password);
                                     currentUserId = userSnapshot.getKey();
+                                    SharedPreferences userPrefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                                    userPrefs.edit().putString("email", storedEmail).apply();
 
                                     if (ContextCompat.checkSelfPermission(LoginActivity.this,
                                             Manifest.permission.ACCESS_FINE_LOCATION)

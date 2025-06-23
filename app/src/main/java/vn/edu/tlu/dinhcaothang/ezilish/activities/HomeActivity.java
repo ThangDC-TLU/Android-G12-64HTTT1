@@ -44,6 +44,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        findViewById(R.id.btnFlashCard).setOnClickListener(v ->
+                startActivity(new Intent(this, VocabularyTopicActivity.class)));
+
+        findViewById(R.id.btnQuiz).setOnClickListener(v ->
+                startActivity(new Intent(this, TopicSelectActivity.class)));
+
         // Gán bottom navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setSelectedItemId(R.id.nav_home); // Đánh dấu Home đang được chọn
