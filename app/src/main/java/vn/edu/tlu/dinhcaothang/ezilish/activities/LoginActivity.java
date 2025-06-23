@@ -207,8 +207,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUserLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Ứng dụng chưa được cấp quyền vị trí", Toast.LENGTH_SHORT).show();
             return;
+        }
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
@@ -228,9 +230,18 @@ public class LoginActivity extends AppCompatActivity {
                     locationMap.put("longitude", lng);
                     locationMap.put("updated_at", System.currentTimeMillis());
 
-                    databaseReference.child(currentUserId).child("location").setValue(locationMap);
+                    databaseReference.child(currentUserId).child("location").setValue(locationMap)
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(LoginActivity.this, "Cập nhật vị trí thành công", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(LoginActivity.this, "Cập nhật vị trí thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    Toast.makeText(LoginActivity.this, "Không lấy được vị trí", Toast.LENGTH_SHORT).show();
                 }
             }
         }, Looper.getMainLooper());
     }
+
 }
