@@ -83,4 +83,18 @@ public class ImageUtils {
             Toast.makeText(context, "Lỗi chọn ảnh", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static String getBase64FromDrawable(Context context, int drawableResId) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableResId);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
+            byte[] byteArray = outputStream.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
