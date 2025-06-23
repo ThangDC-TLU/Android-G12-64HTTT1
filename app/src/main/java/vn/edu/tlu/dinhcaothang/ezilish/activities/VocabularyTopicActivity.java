@@ -4,6 +4,7 @@ import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.adapters.VocabularyTopicAdapter;
 import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -38,6 +39,8 @@ public class VocabularyTopicActivity extends AppCompatActivity {
     private EditText etTopicName;
     private Button btnSave, btnCancel;
 
+    private String currentUserEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,12 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         adapter = new VocabularyTopicAdapter(topicList, this);
         recyclerView.setAdapter(adapter);
 
+        // Lấy email user từ SharedPreferences (KHÔNG dùng Firebase Auth)
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentUserEmail = prefs.getString("email", null);
+
+        // KHÔNG kiểm tra email ở đây, chỉ cảnh báo khi tạo topic
+
         // Ánh xạ các view dialog
         addTopicDialog = findViewById(R.id.addTopicDialog);
         blurOverlay = findViewById(R.id.blurOverlay);
@@ -56,12 +65,13 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
 
-        // Nút Add Topic (nằm trong add_topic_container)
         findViewById(R.id.btn_add).setOnClickListener(v -> showAddTopicDialog());
-        // Bấm Cancel
+        findViewById(R.id.tv_add_topic).setOnClickListener(v -> showAddTopicDialog());
         btnCancel.setOnClickListener(v -> hideAddTopicDialog());
-        // Bấm Save
+        blurOverlay.setOnClickListener(v -> hideAddTopicDialog());
         btnSave.setOnClickListener(v -> saveTopic());
+
+        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
 
         fetchTopicsAndWordCounts();
     }
@@ -82,9 +92,14 @@ public class VocabularyTopicActivity extends AppCompatActivity {
 
     // Lưu dữ liệu lên Firebase và cập nhật giao diện
     private void saveTopic() {
+
         String topicName = etTopicName.getText().toString().trim();
         if (TextUtils.isEmpty(topicName)) {
             etTopicName.setError("Vui lòng nhập tên chủ đề");
+            return;
+        }
+        if (currentUserEmail == null || currentUserEmail.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy email người dùng, vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -98,6 +113,7 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         // Tạo dữ liệu topic mới
         Map<String, Object> topicData = new HashMap<>();
         topicData.put("name", topicName);
+        topicData.put("email", currentUserEmail); // Thêm email vào topic
 
         // Lưu lên Firebase
         topicRef.child(topicId).setValue(topicData, (error, ref) -> {
@@ -129,9 +145,14 @@ public class VocabularyTopicActivity extends AppCompatActivity {
                 for (DataSnapshot topicSnap : topicSnapshot.getChildren()) {
                     String id = topicSnap.getKey();
                     String name = topicSnap.child("name").getValue(String.class);
-                    VocabularyTopic topic = new VocabularyTopic(id, name, 0);
-                    topicList.add(topic);
-                    topicMap.put(id, topic);
+                    String email = topicSnap.child("email").getValue(String.class);
+
+                    // Lọc chỉ những topic của user hiện tại
+                    if (name != null && email != null && email.equalsIgnoreCase(currentUserEmail)) {
+                        VocabularyTopic topic = new VocabularyTopic(id, name, 0, email);
+                        topicList.add(topic);
+                        topicMap.put(id, topic);
+                    }
                 }
 
                 // Sau khi có danh sách topic, lấy toàn bộ words để đếm số lượng theo topic_id

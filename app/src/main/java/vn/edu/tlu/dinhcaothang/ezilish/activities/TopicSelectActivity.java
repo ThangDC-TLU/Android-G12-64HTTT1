@@ -1,6 +1,7 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,11 +21,22 @@ public class TopicSelectActivity extends AppCompatActivity {
     private TopicAdapter adapter;
     private List<Topic> topicList = new ArrayList<>();
     private DatabaseReference topicRef;
+    private String currentUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_select);
+
+        // Lấy email user hiện tại từ SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        currentUserEmail = prefs.getString("email", null);
+
+        if (currentUserEmail == null || currentUserEmail.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy email người dùng, vui lòng đăng nhập lại!", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         rvTopics = findViewById(R.id.rvTopics);
         rvTopics.setLayoutManager(new LinearLayoutManager(this));
@@ -50,8 +62,11 @@ public class TopicSelectActivity extends AppCompatActivity {
                 for (DataSnapshot topicSnap : snapshot.getChildren()) {
                     String id = topicSnap.getKey();
                     String name = topicSnap.child("name").getValue(String.class);
-                    if (name != null) {
-                        topicList.add(new Topic(id, name));
+                    String email = topicSnap.child("email").getValue(String.class);
+
+                    // Lọc topic theo email user hiện tại
+                    if (name != null && email != null && email.equalsIgnoreCase(currentUserEmail)) {
+                        topicList.add(new Topic(id, name, email));
                     }
                 }
                 adapter.notifyDataSetChanged();

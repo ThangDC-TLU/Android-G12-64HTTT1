@@ -33,7 +33,7 @@ public class QuizActivity extends AppCompatActivity {
         tvQuizTitle.setText(topic);
 
         // Gọi generator để lấy 20 câu hỏi
-        QuizGenerator.generateQuiz(topic, 20, new QuizGenerator.Callback() {
+        QuizGenerator.generateQuiz(topic, 10, new QuizGenerator.Callback() {
             @Override
             public void onSuccess(List<QuizQuestion> quiz) {
                 runOnUiThread(() -> {
