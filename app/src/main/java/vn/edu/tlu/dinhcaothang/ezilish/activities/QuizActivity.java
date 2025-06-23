@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.adapters.QuizAdapter;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.QuizGenerator;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.QuizQuestion;
 
 public class QuizActivity extends AppCompatActivity {
     private RecyclerView rvQuiz;

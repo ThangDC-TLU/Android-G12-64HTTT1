@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import vn.edu.tlu.dinhcaothang.ezilish.activities.Topic;
+import vn.edu.tlu.dinhcaothang.ezilish.models.Topic;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {

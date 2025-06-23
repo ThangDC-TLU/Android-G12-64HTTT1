@@ -48,7 +48,7 @@ public class SettingActivity extends AppCompatActivity {
             return insets;
         });
 
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         email = getIntent().getStringExtra("email");
         username = getIntent().getStringExtra("username");

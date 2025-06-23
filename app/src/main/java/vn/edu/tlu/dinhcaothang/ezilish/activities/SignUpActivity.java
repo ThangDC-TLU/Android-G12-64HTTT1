@@ -45,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
             return insets;
         });
 
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
 
         // Firebase
         databaseReference = FirebaseDatabase.getInstance().getReference("users");

@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.adapters;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.models.Word;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
     private List<Word> wordList;

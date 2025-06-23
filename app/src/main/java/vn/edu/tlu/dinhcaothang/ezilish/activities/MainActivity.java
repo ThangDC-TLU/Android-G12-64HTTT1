@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        getSupportActionBar().hide();
 
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
         btnStart = findViewById(R.id.button);
         btnStart.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);

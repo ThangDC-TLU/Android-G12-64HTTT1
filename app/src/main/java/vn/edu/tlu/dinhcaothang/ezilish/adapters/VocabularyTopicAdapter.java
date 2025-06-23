@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.activities;
+package vn.edu.tlu.dinhcaothang.ezilish.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
+import vn.edu.tlu.dinhcaothang.ezilish.activities.WordListActivity;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
 
 public class VocabularyTopicAdapter extends RecyclerView.Adapter<VocabularyTopicAdapter.TopicViewHolder> {
     private List<VocabularyTopic> topicList;
