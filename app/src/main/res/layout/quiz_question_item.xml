@@ -1,50 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:background="@drawable/edittext_border"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_margin="12dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="5dp"
+    card_view:cardBackgroundColor="#FFFFFF">
 
-    <TextView
-        android:id="@+id/tvQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Question 1: What do you wear when it's raining?"
-        android:textColor="#222222"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/rgOptions"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="18dp">
 
-        <RadioButton
-            android:id="@+id/rbOptionA"
+        <TextView
+            android:id="@+id/tvQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sunglasses"
+            android:layout_marginBottom="14dp"
+            android:text="Question 1: What do you wear when it's raining?"
             android:textColor="#222222"
-            android:textSize="15sp" />
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:lineSpacingExtra="4dp" />
 
-        <RadioButton
-            android:id="@+id/rbOptionB"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Swimsuit"
-            android:textColor="#222222"
-            android:textSize="15sp" />
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/rbOptionC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Raincoat"
-            android:textColor="#222222"
-            android:textSize="15sp" />
-    </RadioGroup>
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/rbA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Option A"
+                android:textColor="#222222"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rbB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Option B"
+                android:textColor="#222222"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rbC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Option C"
+                android:textColor="#222222"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rbD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option D"
+                android:textColor="#222222"
+                android:textSize="15sp" />
+
+        </RadioGroup>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

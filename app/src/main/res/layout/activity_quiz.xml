@@ -6,13 +6,22 @@
     android:fitsSystemWindows="true">
 
     <!-- Thanh topbar -->
+
+    <!-- Danh sách câu hỏi -->
+
     <LinearLayout
         android:id="@+id/topBar"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="#184BD6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_edittext"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="12dp">
 
         <ImageView
@@ -22,24 +31,32 @@
             android:contentDescription="@string/back"
             android:src="@drawable/ic_back_arrow"
             android:tint="#1EB9FF" />
+
         <TextView
             android:id="@+id/tvQuizTitle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/quiz_title"
             android:textColor="#1EB9FF"
-            android:textStyle="bold"
             android:textSize="22sp"
-            android:gravity="center"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Danh sách câu hỏi -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvQuiz"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="670dp"
         android:layout_below="@id/topBar"
-        android:padding="16dp"
-        android:clipToPadding="false" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="-3dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:clipToPadding="false"
+        android:padding="16dp" />
 
 </RelativeLayout>
