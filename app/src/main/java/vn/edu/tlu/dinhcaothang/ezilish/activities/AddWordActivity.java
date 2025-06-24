@@ -51,7 +51,7 @@ public class AddWordActivity extends AppCompatActivity {
                 .build();
         freeDictionaryApi = retrofit.create(FreeDictionaryApi.class);
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         etWord.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }

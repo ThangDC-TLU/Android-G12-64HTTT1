@@ -71,7 +71,7 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         blurOverlay.setOnClickListener(v -> hideAddTopicDialog());
         btnSave.setOnClickListener(v -> saveTopic());
 
-        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
+        findViewById(R.id.back_arrow).setOnClickListener(v -> onBackPressed());
 
         fetchTopicsAndWordCounts();
     }

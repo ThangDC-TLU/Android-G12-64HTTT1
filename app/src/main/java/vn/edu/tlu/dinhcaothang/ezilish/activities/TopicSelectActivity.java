@@ -53,7 +53,7 @@ public class TopicSelectActivity extends AppCompatActivity {
         topicRef = FirebaseDatabase.getInstance().getReference("vocabularyTopics");
         loadTopics();
 
-        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
+        findViewById(R.id.back_arrow).setOnClickListener(v -> onBackPressed());
     }
 
     private void loadTopics() {

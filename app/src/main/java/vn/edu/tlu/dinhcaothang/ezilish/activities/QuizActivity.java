@@ -58,7 +58,7 @@ public class QuizActivity extends AppCompatActivity {
         });
 
         ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         btnSubmitQuiz.setOnClickListener(v -> submitQuiz());
     }
