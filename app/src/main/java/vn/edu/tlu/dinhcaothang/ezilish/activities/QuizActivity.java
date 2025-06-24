@@ -32,8 +32,8 @@ public class QuizActivity extends AppCompatActivity {
         if (topic == null) topic = "Travel";
         tvQuizTitle.setText(topic);
 
-        // Gọi generator để lấy 20 câu hỏi
-        QuizGenerator.generateQuiz(topic, 10, new QuizGenerator.Callback() {
+        // Gọi generator để lấy câu hỏi
+        QuizGenerator.generateQuiz(topic, 20, new QuizGenerator.Callback() {
             @Override
             public void onSuccess(List<QuizQuestion> quiz) {
                 runOnUiThread(() -> {

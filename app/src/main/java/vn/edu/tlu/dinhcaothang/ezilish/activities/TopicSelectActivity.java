@@ -52,6 +52,8 @@ public class TopicSelectActivity extends AppCompatActivity {
         // Lấy dữ liệu từ Firebase
         topicRef = FirebaseDatabase.getInstance().getReference("vocabularyTopics");
         loadTopics();
+
+        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
     }
 
     private void loadTopics() {

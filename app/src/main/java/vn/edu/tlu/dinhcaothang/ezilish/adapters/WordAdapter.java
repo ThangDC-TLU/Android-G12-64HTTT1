@@ -11,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.models.Word;
@@ -37,9 +41,27 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         holder.tvExample.setText(word.getExample());
         holder.tvVietnamese.setText(word.getMeaning() == null ? "" : word.getMeaning());
 
-        // Nếu bạn có thuộc tính favorite (star), thì set ngôi sao vàng/xám
-        holder.imgStar.setImageResource(word.isFavorite() ? R.drawable.ic_star : R.drawable.ic_star_border);
-        holder.imgStar.setColorFilter(word.isFavorite() ? 0xFFFFEB3B : 0xFFB0BEC5);
+        // Đổi icon và màu theo trạng thái
+        if (word.isLearned()) {
+            holder.imgStar.setImageResource(R.drawable.ic_star); // ngôi sao vàng
+            holder.imgStar.setColorFilter(0xFFFFEB3B); // vàng
+        } else {
+            holder.imgStar.setImageResource(R.drawable.ic_star_border); // ngôi sao viền xám
+            holder.imgStar.setColorFilter(0xFFB0BEC5); // xám
+        }
+
+        // Xử lý click ngôi sao
+        holder.imgStar.setOnClickListener(v -> {
+            boolean newState = !word.isLearned();
+            word.setLearned(newState);
+            notifyItemChanged(position);
+
+            // Cập nhật lên Firebase
+            DatabaseReference wordRef = FirebaseDatabase.getInstance()
+                    .getReference("words")
+                    .child(word.getId());
+            wordRef.child("learned").setValue(newState);
+        });
 
         // Reset trạng thái flip về mặt trước khi bind lại view
         holder.layoutFront.setVisibility(View.VISIBLE);
