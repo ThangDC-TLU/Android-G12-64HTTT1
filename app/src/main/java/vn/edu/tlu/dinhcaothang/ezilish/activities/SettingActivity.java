@@ -114,6 +114,8 @@ public class SettingActivity extends AppCompatActivity {
 
         findViewById(R.id.btnStatistical).setOnClickListener(v ->
                 startActivity(new Intent(this, StatisticalActivity.class)));
+
+        findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
     }
 
     private void getUserIdByEmail() {
@@ -209,9 +211,17 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận đăng xuất")
+                .setMessage("Bạn có chắc chắn muốn đăng xuất không?")
+                .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
     }
+
 }

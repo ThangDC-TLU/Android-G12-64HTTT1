@@ -1,9 +1,13 @@
 package vn.edu.tlu.dinhcaothang.ezilish.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +46,21 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         Conversation conv = conversationList.get(position);
         holder.tvName.setText(conv.getUsername());
         holder.tvLastMessage.setText(conv.getLastMessage());
+
+        // Load avatar từ base64
+        String avatarBase64 = conv.getAvatarBase64();
+        if (avatarBase64 != null && !avatarBase64.isEmpty()) {
+            try {
+                byte[] decodedBytes = Base64.decode(avatarBase64, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                holder.ivAvatar.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                holder.ivAvatar.setImageResource(R.drawable.img_profile); // fallback khi lỗi decode
+            }
+        } else {
+            holder.ivAvatar.setImageResource(R.drawable.img_profile); // fallback khi avatar null
+        }
+
         holder.itemView.setOnClickListener(v -> listener.onItemClick(conv));
     }
 
@@ -52,11 +71,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     public static class ConversationViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvLastMessage;
+        ImageView ivAvatar;
 
         public ConversationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
+            ivAvatar = itemView.findViewById(R.id.imgAvatar);
         }
     }
 }

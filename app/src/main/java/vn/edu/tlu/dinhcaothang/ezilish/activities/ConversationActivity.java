@@ -14,11 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,39 +38,44 @@ public class ConversationActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conversation);
 
+        // Áp dụng padding để tránh tràn vào khu vực status bar/navigation bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        if (getSupportActionBar() != null) getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide(); // Ẩn ActionBar
 
-        // Lấy email đã truyền từ Intent
+        // Lấy email của người dùng từ Intent
         currentUserEmail = getIntent().getStringExtra("email");
 
-        // Khởi tạo view
+        // Ánh xạ view
         btnBack = findViewById(R.id.btnBack);
         rvConversations = findViewById(R.id.rvConversations);
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
-        // Khởi tạo danh sách và adapter
+        // Khởi tạo danh sách và Adapter
         conversationList = new ArrayList<>();
         adapter = new ConversationAdapter(this, conversationList, this::openChatWithUser);
         rvConversations.setAdapter(adapter);
 
-        btnBack.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> finish()); // Xử lý nút quay lại
 
+        // Tìm ID của user hiện tại (từ email)
         findCurrentUserId();
 
-        // Gán bottom navigation
+        // Thiết lập bottom navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
-        bottomNav.setSelectedItemId(R.id.nav_conversation); // Đánh dấu Home đang được chọn
-
-        // Cài đặt menu
-        BottomNavHelper.setupNavigation(bottomNav, this, getIntent().getStringExtra("username"), getIntent().getStringExtra("email"));
+        bottomNav.setSelectedItemId(R.id.nav_conversation);
+        BottomNavHelper.setupNavigation(
+                bottomNav, this,
+                getIntent().getStringExtra("username"),
+                currentUserEmail
+        );
     }
 
+    // 🔹 Tìm userId tương ứng với email
     private void findCurrentUserId() {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
         usersRef.orderByChild("email").equalTo(currentUserEmail)
@@ -83,7 +84,7 @@ public class ConversationActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot userSnap : snapshot.getChildren()) {
                             currentUserId = userSnap.getKey();
-                            loadMatchedUsers();
+                            loadMatchedUsers(); // Sau khi có ID, tiếp tục load danh sách đã match
                             break;
                         }
                     }
@@ -94,6 +95,7 @@ public class ConversationActivity extends AppCompatActivity {
                 });
     }
 
+    // 🔹 Lấy danh sách những người đã match với current user
     private void loadMatchedUsers() {
         DatabaseReference matchedRef = FirebaseDatabase.getInstance()
                 .getReference("users").child(currentUserId).child("matchedUsers");
@@ -114,16 +116,19 @@ public class ConversationActivity extends AppCompatActivity {
         });
     }
 
+    // 🔹 Lấy thông tin của người đã match: tên, avatar, tin nhắn cuối
     private void fetchMatchedUserInfo(String matchedUserId) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(matchedUserId);
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String username = snapshot.child("username").getValue(String.class);
+                String avatarBase64 = snapshot.child("avatarBase64").getValue(String.class); // thêm dòng này
 
+                // Lấy tin nhắn cuối cùng từ chat
                 String chatPath = generateChatId(currentUserId, matchedUserId);
-
                 DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("messages").child(chatPath);
+
                 chatRef.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot chatSnap) {
@@ -133,7 +138,8 @@ public class ConversationActivity extends AppCompatActivity {
                             if (text != null) lastMessage = text;
                         }
 
-                        conversationList.add(new Conversation(matchedUserId, username, lastMessage));
+                        // Thêm vào danh sách conversation và cập nhật adapter
+                        conversationList.add(new Conversation(matchedUserId, username, lastMessage, avatarBase64));
                         adapter.notifyDataSetChanged();
                     }
 
@@ -149,13 +155,15 @@ public class ConversationActivity extends AppCompatActivity {
         });
     }
 
+    // 🔹 Mở ChatActivity khi click vào người trong danh sách
     private void openChatWithUser(Conversation conversation) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("currentUserId", currentUserId);
-        intent.putExtra("receiverId", conversation.getUserId()); // Phải là receiverId như ChatActivity
+        intent.putExtra("receiverId", conversation.getUserId());
         startActivity(intent);
     }
 
+    // 🔹 Tạo chatId theo cách sắp xếp userId tăng dần để đảm bảo duy nhất
     private String generateChatId(String id1, String id2) {
         return id1.compareTo(id2) < 0 ? id1 + "_" + id2 : id2 + "_" + id1;
     }
