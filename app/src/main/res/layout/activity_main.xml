@@ -25,7 +25,7 @@
         android:layout_height="59dp"
         android:layout_margin="16dp"
         android:padding="12dp"
-        android:text="Get Started"
+        android:text="Bắt đầu ngay"
         android:textColor="#1E90FF"
         android:textSize="18sp"
         android:textStyle="bold"
