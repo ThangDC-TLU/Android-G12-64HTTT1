@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -108,7 +107,11 @@ public class SettingActivity extends AppCompatActivity {
         getUserIdByEmail();
 
         findViewById(R.id.btnChangePassword).setOnClickListener(v -> showChangePasswordDialog());
-        findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
+
+        findViewById(R.id.btnStatistical).setOnClickListener(v ->
+                startActivity(new Intent(this, StatisticalActivity.class)));
+
+
     }
 
     private void getUserIdByEmail() {
