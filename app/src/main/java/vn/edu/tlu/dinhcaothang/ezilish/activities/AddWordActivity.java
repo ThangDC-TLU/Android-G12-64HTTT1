@@ -130,7 +130,10 @@ public class AddWordActivity extends AppCompatActivity {
 
         DatabaseReference wordsRef = FirebaseDatabase.getInstance().getReference("words");
         String id = wordsRef.push().getKey();
-        Word w = new Word(id, word, phonetic, meaning, example, explanation, topicId);
+
+        boolean learned = false;
+
+        Word w = new Word(id, word, phonetic, meaning, example, explanation, topicId, learned);
 
         wordsRef.child(id).setValue(w, (error, ref) -> {
             if (error == null) {

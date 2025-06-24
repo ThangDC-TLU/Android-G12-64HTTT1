@@ -8,13 +8,11 @@ public class Word {
     private String example;
     private String explanation;
     private String topic_id;
-
-    // Thêm thuộc tính favorite
-    private boolean favorite = false;
+    private boolean learned = false;
 
     public Word() {}
 
-    public Word(String id, String english, String phonetic, String meaning, String example, String explanation, String topic_id) {
+    public Word(String id, String english, String phonetic, String meaning, String example, String explanation, String topic_id, boolean learned) {
         this.id = id;
         this.english = english;
         this.phonetic = phonetic;
@@ -22,16 +20,17 @@ public class Word {
         this.example = example;
         this.explanation = explanation;
         this.topic_id = topic_id;
+        this.learned = learned;
     }
 
     // Getter, setter mặc định...
 
-    public boolean isFavorite() {
-        return favorite;
+    public boolean isLearned() {
+        return learned;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
+    public void setLearned(boolean learned) {
+        this.learned = learned;
     }
 
     // Các getter/setter khác giữ nguyên
