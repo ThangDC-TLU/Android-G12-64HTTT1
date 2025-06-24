@@ -114,7 +114,7 @@
         android:id="@+id/btnSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:text="Đăng ký"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1E90FF"

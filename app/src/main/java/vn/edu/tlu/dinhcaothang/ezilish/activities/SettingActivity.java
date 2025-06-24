@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +34,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private String email, username, userId;
     private ImageView imgAvatar, imgEditAvatar;
+    private TextView tvUsername;
     private ActivityResultLauncher<String> imagePickerLauncher;
 
     @Override
@@ -106,12 +108,12 @@ public class SettingActivity extends AppCompatActivity {
         // Lấy userId
         getUserIdByEmail();
 
+        tvUsername = findViewById(R.id.tvUsername);
+        tvUsername.setText(username);
         findViewById(R.id.btnChangePassword).setOnClickListener(v -> showChangePasswordDialog());
 
         findViewById(R.id.btnStatistical).setOnClickListener(v ->
                 startActivity(new Intent(this, StatisticalActivity.class)));
-
-
     }
 
     private void getUserIdByEmail() {

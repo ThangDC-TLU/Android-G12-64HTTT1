@@ -72,20 +72,6 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogout2"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#1E90FF"
-            android:padding="15dp"
-            android:text="ĐĂNG XUẤT"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:cornerRadius="32dp" />
-
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnChangePassword"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
@@ -107,6 +93,20 @@
             android:backgroundTint="#1E90FF"
             android:padding="15dp"
             android:text="THỐNG KÊ "
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:cornerRadius="32dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout2"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#1E90FF"
+            android:padding="15dp"
+            android:text="ĐĂNG XUẤT"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             app:cornerRadius="32dp" />

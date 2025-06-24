@@ -1,8 +1,10 @@
 package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +21,7 @@ import vn.edu.tlu.dinhcaothang.ezilish.utils.BottomNavHelper;
 
 public class HomeActivity extends AppCompatActivity {
     private TextView tvExploreMore;
+    private Button btnFlashCard, btnQuiz, btnFindCompanion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +47,22 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        findViewById(R.id.btnFlashCard).setOnClickListener(v ->
+        // Gán các nút bấm
+        btnFlashCard = findViewById(R.id.btnFlashCard);
+        btnQuiz = findViewById(R.id.btnQuiz);
+        btnFindCompanion = findViewById(R.id.btnFindCompanion);
+        btnFlashCard.setOnClickListener(v ->
                 startActivity(new Intent(this, VocabularyTopicActivity.class)));
 
-        findViewById(R.id.btnQuiz).setOnClickListener(v ->
+        btnQuiz.setOnClickListener(v ->
                 startActivity(new Intent(this, TopicSelectActivity.class)));
+
+        btnFindCompanion.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, FindCompanionActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("email", getIntent().getStringExtra("email"));
+            startActivity(intent);
+        });
 
         // Gán bottom navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
