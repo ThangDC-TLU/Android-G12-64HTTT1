@@ -8,7 +8,7 @@
     android:background="#1E90FF"
     tools:context=".activities.HomeActivity">
 
-    <!-- Header: Avatar, Name, and Crown -->
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -25,10 +25,9 @@
             android:textSize="18sp"
             android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-medium" />
-
     </LinearLayout>
 
-    <!-- Main Content: Map and Learn with Friends -->
+    <!-- CardView Main Content -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cvMainContent"
         android:layout_width="0dp"
@@ -59,7 +58,7 @@
                 android:id="@+id/tvLearnWithFriends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Learn with your friends"
+                android:text="Tìm kiếm bạn bè"
                 android:textSize="16sp"
                 android:textColor="#000000"
                 android:fontFamily="sans-serif-medium"
@@ -93,7 +92,7 @@
                 android:id="@+id/tvExploreMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Explore more →"
+                android:text="Khám phá →"
                 android:textSize="14sp"
                 android:textColor="#2196F3"
                 android:fontFamily="sans-serif"
@@ -101,92 +100,84 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Function Buttons -->
+    <!-- Material Buttons -->
 
-    <Button
+    <!-- FlashCard Button -->
+
+    <!-- Quiz Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFlashCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button_background"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFFFFF"
         android:fontFamily="sans-serif-medium"
-        android:padding="12dp"
+        android:paddingVertical="14dp"
         android:text="FlashCard"
         android:textColor="#000000"
-        android:textSize="16sp"
+        android:textSize="17sp"
+        app:cornerRadius="20dp"
+        app:iconGravity="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cvMainContent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnQuiz"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:paddingVertical="14dp"
         android:text="Quiz"
-        android:textSize="16sp"
         android:textColor="#000000"
-        android:background="@drawable/button_background"
+        android:textSize="17sp"
         android:fontFamily="sans-serif-medium"
+        android:backgroundTint="#FFFFFF"
+        app:cornerRadius="20dp"
+        app:iconGravity="textStart"
         app:layout_constraintTop_toBottomOf="@id/btnFlashCard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:padding="12dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btnTopic"
+    <!-- Tìm bạn bè Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFindCompanion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button_background"
-        android:fontFamily="sans-serif-medium"
-        android:padding="12dp"
-        android:text="Match friend"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:paddingVertical="14dp"
+        android:text="Tìm bạn bè"
         android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="17sp"
+        android:fontFamily="sans-serif-medium"
+        android:backgroundTint="#FFFFFF"
+        app:cornerRadius="20dp"
+        app:iconGravity="textStart"
+        app:layout_constraintTop_toBottomOf="@id/btnQuiz"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnQuiz" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btnEverydayEnglish"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Everyday English"
-        android:textSize="16sp"
-        android:textColor="#000000"
-        android:background="@drawable/button_background"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintTop_toBottomOf="@id/btnTopic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:padding="12dp" />
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:layout_marginBottom="4dp"
         android:background="#FFFFFF"
         app:itemIconTint="@color/bottom_nav_selector"
         app:itemTextColor="@color/bottom_nav_selector"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu"
         tools:ignore="MissingConstraints" />
 

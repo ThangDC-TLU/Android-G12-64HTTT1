@@ -3,6 +3,7 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import vn.edu.tlu.dinhcaothang.ezilish.models.Statistical;
 
 public class StatisticalActivity extends AppCompatActivity {
     private RecyclerView rvTopicStats;
+    private ImageView backArrow;
     private StatisticalAdapter adapter;
     private final List<Statistical> statsList = new ArrayList<>();
     private String userEmail;
@@ -45,8 +47,11 @@ public class StatisticalActivity extends AppCompatActivity {
         dbRef = FirebaseDatabase.getInstance().getReference();
         fetchTopicsOfCurrentUser();
 
-        findViewById(R.id.back_arrow).setOnClickListener(v ->
-                startActivity(new Intent(this, SettingActivity.class)));
+        backArrow = findViewById(R.id.back_arrow);
+        backArrow.setOnClickListener(v -> {
+            onBackPressed();
+        });
+
     }
 
     private String getUserEmailFromPrefs() {

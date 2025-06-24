@@ -43,7 +43,7 @@ public class WordListActivity extends AppCompatActivity {
         topicName = getIntent().getStringExtra("topicName");
         tvHeader.setText(topicName);
 
-        btnBack.setOnClickListener(v -> finish()); // Quay lại trang topic
+        btnBack.setOnClickListener(v -> onBackPressed()); // Quay lại trang topic
 
         findViewById(R.id.btnAddWord).setOnClickListener(v -> {
             Intent intent = new Intent(this, AddWordActivity.class);

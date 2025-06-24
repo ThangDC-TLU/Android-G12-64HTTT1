@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.activities.WordListActivity;
-import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
+import vn.edu.tlu.dinhcaothang.ezilish.models.VocabularyTopic;
 
 public class VocabularyTopicAdapter extends RecyclerView.Adapter<VocabularyTopicAdapter.TopicViewHolder> {
     private List<VocabularyTopic> topicList;

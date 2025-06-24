@@ -33,7 +33,6 @@
                 android:contentDescription="@string/desc_back_arrow"
                 android:padding="8dp"
                 android:src="@drawable/ic_back_arrow"
-                android:tint="#0777FD"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true" />

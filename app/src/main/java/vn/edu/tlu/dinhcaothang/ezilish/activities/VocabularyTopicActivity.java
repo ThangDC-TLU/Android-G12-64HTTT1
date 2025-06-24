@@ -2,7 +2,7 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.adapters.VocabularyTopicAdapter;
-import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
+import vn.edu.tlu.dinhcaothang.ezilish.models.VocabularyTopic;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -71,7 +71,7 @@ public class VocabularyTopicActivity extends AppCompatActivity {
         blurOverlay.setOnClickListener(v -> hideAddTopicDialog());
         btnSave.setOnClickListener(v -> saveTopic());
 
-        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
+        findViewById(R.id.back_arrow).setOnClickListener(v -> onBackPressed());
 
         fetchTopicsAndWordCounts();
     }
