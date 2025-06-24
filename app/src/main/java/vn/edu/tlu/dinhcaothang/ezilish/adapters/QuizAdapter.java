@@ -16,8 +16,6 @@ import java.util.List;
 
 public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder> {
     private List<QuizQuestion> quizList;
-
-    // Lưu lựa chọn của người dùng cho từng câu hỏi
     private String[] userChoices;
 
     public QuizAdapter(List<QuizQuestion> quizList) {
@@ -38,19 +36,16 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         QuizQuestion question = quizList.get(position);
         holder.tvQuestion.setText("Question " + (position + 1) + ": " + question.question);
 
-        // Set text cho từng đáp án
         holder.rbA.setText(question.options.get(0));
         holder.rbB.setText(question.options.get(1));
         holder.rbC.setText(question.options.get(2));
         holder.rbD.setText(question.options.get(3));
 
-        // Reset màu về mặc định
         holder.rbA.setTextColor(Color.BLACK);
         holder.rbB.setTextColor(Color.BLACK);
         holder.rbC.setTextColor(Color.BLACK);
         holder.rbD.setTextColor(Color.BLACK);
 
-        // Set lại trạng thái checked
         holder.radioGroup.setOnCheckedChangeListener(null);
         if ("A".equals(userChoices[position])) holder.rbA.setChecked(true);
         else if ("B".equals(userChoices[position])) holder.rbB.setChecked(true);
@@ -58,41 +53,32 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         else if ("D".equals(userChoices[position])) holder.rbD.setChecked(true);
         else holder.radioGroup.clearCheck();
 
-        // Hiển thị màu đúng/sai sau khi đã chọn
+        // Hiển thị đúng sai nếu đã chọn
         if (userChoices[position] != null) {
-            // Hiển thị xanh cho đáp án đúng
             RadioButton rbCorrect = getRadioButtonByAnswer(holder, question.answer);
-            rbCorrect.setTextColor(Color.parseColor("#388E3C")); // Xanh lá
-
-            // Nếu chọn sai thì đáp án chọn chuyển đỏ
+            rbCorrect.setTextColor(Color.parseColor("#388E3C"));
             if (!userChoices[position].equals(question.answer)) {
                 RadioButton rbUser = getRadioButtonByAnswer(holder, userChoices[position]);
                 rbUser.setTextColor(Color.RED);
             }
-
-            // Không cho chọn lại
             holder.rbA.setEnabled(false);
             holder.rbB.setEnabled(false);
             holder.rbC.setEnabled(false);
             holder.rbD.setEnabled(false);
         } else {
-            // Cho chọn nếu chưa chọn
             holder.rbA.setEnabled(true);
             holder.rbB.setEnabled(true);
             holder.rbC.setEnabled(true);
             holder.rbD.setEnabled(true);
         }
 
-        // Xử lý chọn đáp án
         holder.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (userChoices[position] != null) return; // đã chọn rồi, không cho chọn lại
-
+            if (userChoices[position] != null) return;
             String selected = null;
             if (checkedId == holder.rbA.getId()) selected = "A";
             else if (checkedId == holder.rbB.getId()) selected = "B";
             else if (checkedId == holder.rbC.getId()) selected = "C";
             else if (checkedId == holder.rbD.getId()) selected = "D";
-
             userChoices[position] = selected;
             notifyItemChanged(position);
         });
@@ -111,6 +97,18 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     @Override
     public int getItemCount() {
         return quizList.size();
+    }
+
+    // Hàm tính điểm
+    public int calculateScore() {
+        int score = 0;
+        for (int i = 0; i < quizList.size(); i++) {
+            QuizQuestion q = quizList.get(i);
+            if (userChoices[i] != null && userChoices[i].equals(q.answer)) {
+                score++;
+            }
+        }
+        return score;
     }
 
     static class QuizViewHolder extends RecyclerView.ViewHolder {
