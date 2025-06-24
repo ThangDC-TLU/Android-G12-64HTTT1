@@ -1,4 +1,4 @@
-package vn.edu.tlu.dinhcaothang.ezilish.utils;
+package vn.edu.tlu.dinhcaothang.ezilish.models;
 
 public class VocabularyTopic {
     private String id;

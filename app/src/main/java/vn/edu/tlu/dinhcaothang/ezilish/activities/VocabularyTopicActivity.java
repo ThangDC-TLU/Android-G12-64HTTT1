@@ -2,7 +2,7 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.adapters.VocabularyTopicAdapter;
-import vn.edu.tlu.dinhcaothang.ezilish.utils.VocabularyTopic;
+import vn.edu.tlu.dinhcaothang.ezilish.models.VocabularyTopic;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
