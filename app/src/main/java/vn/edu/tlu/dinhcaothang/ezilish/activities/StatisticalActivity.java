@@ -45,8 +45,7 @@ public class StatisticalActivity extends AppCompatActivity {
         dbRef = FirebaseDatabase.getInstance().getReference();
         fetchTopicsOfCurrentUser();
 
-        findViewById(R.id.back_arrow).setOnClickListener(v ->
-                startActivity(new Intent(this, SettingActivity.class)));
+        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
     }
 
     private String getUserEmailFromPrefs() {
