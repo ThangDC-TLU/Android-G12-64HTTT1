@@ -3,6 +3,7 @@ package vn.edu.tlu.dinhcaothang.ezilish.activities;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,13 +27,14 @@ import java.util.List;
 import vn.edu.tlu.dinhcaothang.ezilish.R;
 import vn.edu.tlu.dinhcaothang.ezilish.adapters.MessageAdapter;
 import vn.edu.tlu.dinhcaothang.ezilish.models.Message;
+import vn.edu.tlu.dinhcaothang.ezilish.utils.ImageUtils;
 
 public class ChatActivity extends AppCompatActivity {
     private RecyclerView rvMessages;
     private EditText etMessage;
     private TextView tvReceiverName;
     private ImageButton btnSend, btnBack;
-
+    private ImageView ivReceiverAvatar;
     private List<Message> messageList = new ArrayList<>();
     private MessageAdapter adapter;
 
@@ -55,6 +57,10 @@ public class ChatActivity extends AppCompatActivity {
         currentUserId = getIntent().getStringExtra("currentUserId");
         receiverId = getIntent().getStringExtra("receiverId");
         chatId = generateChatId(currentUserId, receiverId);
+
+        ivReceiverAvatar = findViewById(R.id.ivReceiverAvatar);
+        //Thiet lập ảnh đại diện người nhận
+        ImageUtils.loadAvatarIntoImageView(receiverId,this, ivReceiverAvatar);
 
         // Ánh xạ view
         btnBack = findViewById(R.id.btnBack);
