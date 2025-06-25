@@ -38,12 +38,12 @@
         <ImageView
             android:id="@+id/ivReceiverAvatar"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="32dp"
             android:layout_marginStart="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_profile"
             android:background="@drawable/circle_background"
-            android:clipToOutline="true" />
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_profile" />
 
         <!-- Tên người nhận -->
         <TextView
